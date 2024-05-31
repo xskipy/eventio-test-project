@@ -1,12 +1,11 @@
 import { Stack } from "expo-router";
-  
-const MainLayout = () => {
 
+const MainLayout = () => {
   return (
     <Stack>
-      <Stack.Screen options={{ title: 'Events' }} name="index" />
+      <Stack.Screen options={{ title: "Events" }} name="index" />
     </Stack>
   );
-}
+};
 
 export default MainLayout;

@@ -12,6 +12,6 @@ const Login = () => {
       <Text>Login screen.</Text>
     </View>
   );
-}
+};
 
 export default Login;

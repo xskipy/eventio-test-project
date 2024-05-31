@@ -12,6 +12,6 @@ const Signup = () => {
       <Text>signup screen.</Text>
     </View>
   );
-}
+};
 
 export default Signup;
