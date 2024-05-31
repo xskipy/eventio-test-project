@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { breakpoints } from "@/constants/theme";
 
 const RootLayout = () => {
   const [loaded] = useFonts({
@@ -20,6 +21,12 @@ const RootLayout = () => {
 
   return (
     <Stack
+      screenOptions={{
+        contentStyle: {
+          padding: breakpoints.padding,
+        },
+        headerShown: false,
+      }}
       // TODO: set route based on user logged in
       initialRouteName="index"
     >
