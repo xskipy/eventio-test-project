@@ -1,9 +1,6 @@
-import Button from "@/components/Button";
-import Input from "@/components/Input";
-import Link from "@/components/Link";
+import LoginForm from "@/components/forms/LoginForm";
 import Text from "@/components/Text";
-import { breakpoints } from "@/constants/theme";
-import { View, Image, KeyboardAvoidingView } from "react-native";
+import { View, Image } from "react-native";
 
 const Login = () => {
   return (
@@ -26,25 +23,7 @@ const Login = () => {
       <Text style={{ marginTop: 16 }} type="subtitle">
         Enter your details below..
       </Text>
-      <Input placeholder="Email" />
-      <Input placeholder="Password" type="password" />
-      <KeyboardAvoidingView
-        style={{
-          flex: 1,
-          width: "100%",
-          justifyContent: "flex-end",
-          paddingBottom: breakpoints.padding,
-        }}
-      >
-        <Button
-          style={{ paddingVertical: 18 }}
-          onPressOut={() => console.log("clicked")}
-          title="SIGN IN"
-        />
-        <Text style={{ marginTop: 16, textAlign: "center" }} type="subtitle">
-          Don't have an account? <Link to="signup">Sign up</Link>
-        </Text>
-      </KeyboardAvoidingView>
+      <LoginForm />
     </View>
   );
 };

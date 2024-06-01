@@ -3,22 +3,48 @@ import { breakpoints, colors } from "@/constants/theme";
 import { useState } from "react";
 import { StyleSheet, TextInput, View, ViewStyle, TextInputProps } from "react-native";
 import EyeIcon from "@/assets/images/icons/eye.svg";
-
+import ValidationType from "@/types/ValidationType";
+import { Controller, useFormContext } from "react-hook-form";
+import getErrorMessage from "@/utils/getErrorMessage";
+import getInputRules from "@/utils/getInputRules";
 interface InputProps extends Omit<TextInputProps, "value" | "secureTextEntry"> {
   initialValue?: string;
   type?: "text" | "password";
+  name: string;
+  validation?: ValidationType;
+  required?: boolean;
 }
 
-const Input = ({ initialValue, type = "text", ...rest }: InputProps) => {
-  const [value, setValue] = useState(initialValue);
+const Input = ({
+  name,
+  initialValue = "",
+  required = false,
+  type = "text",
+  validation,
+  ...rest
+}: InputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [secureText, setSecureText] = useState(type === "password");
 
   const toggleSecureText = () => setSecureText(!secureText);
 
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const errorMessage = getErrorMessage(errors[name]);
+  const inputRules = getInputRules(validation, required);
+
   return (
     <View style={styles.container}>
-      <View style={[styles.inputContainer, isFocused ? styles.focusedInput : undefined]}>
+      <View
+        style={[
+          styles.inputContainer,
+          isFocused ? styles.focusedInput : undefined,
+          errorMessage ? styles.errorInput : undefined,
+        ]}
+      >
         {type === "password" && (
           // TODO: add highlight
           <EyeIcon
@@ -28,19 +54,32 @@ const Input = ({ initialValue, type = "text", ...rest }: InputProps) => {
             height={13}
           />
         )}
-        <TextInput
-          onBlur={() => setIsFocused(false)}
-          onFocus={() => setIsFocused(true)}
-          {...rest}
-          style={styles.input}
-          value={value}
-          onChangeText={setValue}
-          secureTextEntry={secureText}
+        <Controller
+          control={control}
+          name={name}
+          rules={inputRules}
+          defaultValue={initialValue}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={() => {
+                onBlur();
+                setIsFocused(false);
+              }}
+              onFocus={() => setIsFocused(true)}
+              {...rest}
+              style={styles.input}
+              value={value}
+              onChangeText={onChange}
+              secureTextEntry={secureText}
+            />
+          )}
         />
       </View>
-      <Text style={styles.error} type="error">
-        test error
-      </Text>
+      {errorMessage && (
+        <Text style={styles.error} type="error">
+          {errorMessage}
+        </Text>
+      )}
     </View>
   );
 };
@@ -70,6 +109,9 @@ const styles = StyleSheet.create({
   },
   focusedInput: {
     borderBottomColor: colors.primary,
+  },
+  errorInput: {
+    borderBottomColor: colors.error,
   },
   displayPasswordIcon: {
     position: "absolute",
