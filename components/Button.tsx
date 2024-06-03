@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Text from "@/components/Text";
-import { TouchableHighlight, StyleSheet, TouchableHighlightProps } from "react-native";
+import {
+  TouchableHighlight,
+  StyleSheet,
+  TouchableHighlightProps,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { colors } from "@/constants/theme";
 
 type ButtonTypes = "primary" | "red" | "black";
@@ -8,16 +14,34 @@ type ButtonTypes = "primary" | "red" | "black";
 interface ButtonProps extends TouchableHighlightProps {
   type?: ButtonTypes;
   title: string;
+  loading?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ type = "primary", title, style, ...rest }) => (
-  <TouchableHighlight
-    style={[styles.button, { backgroundColor: getButtonColor(type) }, style]}
-    {...rest}
-  >
-    <Text style={styles.text}>{title}</Text>
-  </TouchableHighlight>
-);
+const Button: React.FC<ButtonProps> = ({
+  type = "primary",
+  title,
+  style,
+  loading = false,
+  ...rest
+}) => {
+  const btnStyle = useMemo(
+    () => [styles.button, { backgroundColor: getButtonColor(type) }, style],
+    [style, type]
+  );
+
+  if (loading)
+    return (
+      <View style={btnStyle}>
+        <ActivityIndicator color={colors.white} />
+      </View>
+    );
+
+  return (
+    <TouchableHighlight style={btnStyle} {...rest}>
+      <Text style={styles.text}>{title}</Text>
+    </TouchableHighlight>
+  );
+};
 
 const getButtonColor = (type: ButtonTypes) => {
   switch (type) {

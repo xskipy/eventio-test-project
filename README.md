@@ -1,20 +1,44 @@
-# Welcome to your Expo app 👋
+![Eventio Logo](/assets/images/white-logo.png "Eventio Logo")
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Eventio.
+
+Eventio, a mobile app that allows registered users to sign up for and create events.
 
 ## Get started
+
+### Bun
+
+This app is using [![Bun Logo!](/assets/images/bun_logo.png "Bun Logo") _Bun_](https://bun.sh/)!
+
+Make sure you are using `v.1.1.12`!
+
+For instructions how to install Bun follow their [website](https://bun.sh/)!
 
 1. Install dependencies
 
    ```bash
-   npm install
+   bun install
    ```
 
-2. Start the app
+2. Add API key
 
-   ```bash
-    npx expo start
-   ```
+- Copy API key from email or project documentation to `.env.development` file
+
+  ```
+  API_KEY=abc123456-789-9bce87-654cde
+  ```
+
+  _In production, the CI will have production API key saved in its configuration files._
+
+  _In case of production errors, check if the key is setup correctly._
+
+## Starting the app
+
+### Default start
+
+```bash
+ bun expo start
+```
 
 In the output, you'll find options to open the app in a
 
@@ -23,28 +47,32 @@ In the output, you'll find options to open the app in a
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Direct platform start
 
-## Get a fresh project
+**IOS**
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+bun run ios
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+**ANDROID**
 
-## Learn more
+```
+bun run android
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Resources
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Project Documentation
 
-## Join the community
+- [Google Docs](https://docs.google.com/document/d/167XfckICXbD52TVxN2a83VxcZPCxmIKJ2HfOBR3vaG4/)
 
-Join our community of developers creating universal apps.
+- [Eventio API](https://eventio-testproject-api.vercel.app/)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Expo
+
+This project uses [Expo file-based routing](https://docs.expo.dev/router/introduction).
+
+### TanStack Query (previously React Query)
+
+[Documentation](https://tanstack.com/query/latest/docs/framework/react/overview)

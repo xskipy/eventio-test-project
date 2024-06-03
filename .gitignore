@@ -10,6 +10,9 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# To avoid accidental API_KEY commits
+.env.development
+
 # macOS
 .DS_Store
 

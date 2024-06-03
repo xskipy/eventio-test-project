@@ -1,12 +1,20 @@
 import Text from "@/components/Text";
 import { breakpoints, colors } from "@/constants/theme";
 import { useState } from "react";
-import { StyleSheet, TextInput, View, ViewStyle, TextInputProps } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  ViewStyle,
+  TextInputProps,
+  KeyboardAvoidingView,
+} from "react-native";
 import EyeIcon from "@/assets/images/icons/eye.svg";
 import ValidationType from "@/types/ValidationType";
 import { Controller, useFormContext } from "react-hook-form";
 import getErrorMessage from "@/utils/getErrorMessage";
 import getInputRules from "@/utils/getInputRules";
+import useKeyboardVisible from "@/hooks/useKeyboardVisible";
 interface InputProps extends Omit<TextInputProps, "value" | "secureTextEntry"> {
   initialValue?: string;
   type?: "text" | "password";
@@ -25,6 +33,7 @@ const Input = ({
 }: InputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [secureText, setSecureText] = useState(type === "password");
+  const { isKeyboardVisible } = useKeyboardVisible();
 
   const toggleSecureText = () => setSecureText(!secureText);
 
@@ -38,7 +47,12 @@ const Input = ({
 
   // TODO: check if keyboard avoiding view would be a better choice
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={breakpoints.padding}
+      enabled={isFocused && isKeyboardVisible}
+      behavior="position"
+      style={styles.container}
+    >
       <View
         style={[
           styles.inputContainer,
@@ -81,7 +95,7 @@ const Input = ({
           {errorMessage}
         </Text>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -95,6 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   inputContainer: {
+    backgroundColor: colors.white,
     width: "100%",
     borderBottom: 1,
     borderBottomWidth: 1,

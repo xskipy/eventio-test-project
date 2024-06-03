@@ -3,22 +3,48 @@ import Input from "@/components/Input";
 import Link from "@/components/Link";
 import Text from "@/components/Text";
 import { breakpoints } from "@/constants/theme";
+import useMutation from "@/hooks/useMutation";
+import AuthResponse from "@/types/api/AuthResponse";
+import LoginFormValues from "@/types/forms/LoginFormValues";
+import setFormError from "@/utils/setFormError";
+import { saveToStorage } from "@/utils/storage";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAvoidingView } from "react-native";
 
 const LoginForm = () => {
-  const methods = useForm();
+  const methods = useForm<LoginFormValues>();
+  const { mutate, status } = useMutation<AuthResponse, unknown, LoginFormValues>(
+    ["auth/native"],
+    "POST",
+    {
+      onSuccess: (data) => {
+        console.log(`-----Succesfully logged in ${data.firstName} ${data.lastName}`);
+        saveToStorage("userData", JSON.stringify(data));
+      },
+      onError: (err) => {
+        console.log("-----Error logging in", { err });
+        setFormError(methods, "email", " ");
+        setFormError(
+          methods,
+          "password",
+          "Oops! That email and password combination is not valid."
+        );
+      },
+      retry: false,
+    }
+  );
 
-  // todo: fix types
-  const onLogin = (values: any) => {
-    console.log("values", { values });
+  const onLogin = (values: LoginFormValues) => {
+    console.log("values", { ...values });
+    mutate(values);
   };
 
   return (
     <FormProvider {...methods}>
-      <Input required validation={"email"} name="email" placeholder="Email" />
-      <Input required name="password" placeholder="Password" type="password" />
+      <Input name="email" required validation="email" placeholder="Email" />
+      <Input name="password" required placeholder="Password" type="password" />
       <KeyboardAvoidingView
+        behavior="position"
         style={{
           flex: 1,
           width: "100%",
@@ -27,6 +53,7 @@ const LoginForm = () => {
         }}
       >
         <Button
+          loading={status === "pending"}
           style={{ paddingVertical: 18 }}
           onPressOut={methods.handleSubmit(onLogin)}
           title="SIGN IN"
