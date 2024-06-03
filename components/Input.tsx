@@ -36,6 +36,7 @@ const Input = ({
   const errorMessage = getErrorMessage(errors[name]);
   const inputRules = getInputRules(validation, required);
 
+  // TODO: check if keyboard avoiding view would be a better choice
   return (
     <View style={styles.container}>
       <View

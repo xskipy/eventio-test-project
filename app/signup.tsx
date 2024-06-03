@@ -1,13 +1,15 @@
 import SignupForm from "@/components/forms/SignupForm";
 import Text from "@/components/Text";
-import { View, Image } from "react-native";
+import { View, Image, ScrollView } from "react-native";
 
 const Signup = () => {
   return (
-    <View
+    <ScrollView
+      contentContainerStyle={{
+        alignItems: "center",
+      }}
       style={{
         flex: 1,
-        alignItems: "center",
       }}
     >
       <Image
@@ -24,7 +26,7 @@ const Signup = () => {
         Enter your details below..
       </Text>
       <SignupForm />
-    </View>
+    </ScrollView>
   );
 };
 

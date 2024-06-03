@@ -15,6 +15,8 @@ const SignupForm = () => {
   };
 
   // TODO: fix keyboard view overlaying form
+  // remove justify-bottom? add margin top
+  // add scroll view
   return (
     <FormProvider {...methods}>
       <Input required name="firstname" placeholder="First name" />
@@ -24,7 +26,8 @@ const SignupForm = () => {
       <Input required name="repeatpassword" placeholder="Repeat password" type="password" />
       <KeyboardAvoidingView
         style={{
-          flex: 1,
+          marginTop: 40,
+          // flex: 1,
           width: "100%",
           justifyContent: "flex-end",
           paddingBottom: breakpoints.padding,
@@ -36,7 +39,7 @@ const SignupForm = () => {
           title="SIGN IN"
         />
         <Text style={{ marginTop: 16, textAlign: "center" }} type="subtitle">
-          Already have an account? <Link to="login">Log in</Link>
+          Already have an account? <Link to="/">Log in</Link>
         </Text>
       </KeyboardAvoidingView>
     </FormProvider>
