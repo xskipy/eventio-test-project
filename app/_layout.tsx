@@ -46,7 +46,7 @@ const RootLayout = () => {
       >
         <Stack.Screen options={{ title: "Login" }} name="index" />
         <Stack.Screen options={{ title: "Sign Up" }} name="signup" />
-        {/* <Stack.Screen options={{ title: 'Main' }} name="(main)" /> */}
+        <Stack.Screen options={{ title: "Main" }} name="(main)" />
       </Stack>
     </QueryClientProvider>
   );

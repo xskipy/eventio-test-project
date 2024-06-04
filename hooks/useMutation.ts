@@ -1,5 +1,6 @@
 import { apiUrl } from "@/config";
-import { saveToStorage } from "@/utils/storage";
+import refreshSession from "@/utils/refreshToken";
+import { getFromStorage, saveToStorage } from "@/utils/storage";
 import {
   MutationKey,
   UseMutationOptions,
@@ -27,13 +28,14 @@ const useMutation = <TData, TError, TVariables>(
           "API_KEY is not defined in environment variables. Check docs for more information."
         );
 
+      const accessToken = await getFromStorage("auth");
+
       const res = await fetch(`${apiUrl}${endpointUrl}` ?? "", {
         method: fetchMethod,
         headers: {
           "Content-Type": "application/json",
           APIKey,
-          // TODO: add access token
-          //   ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
+          ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
         },
         ...(variables ? { body: JSON.stringify(variables) } : {}),
       });
@@ -43,7 +45,8 @@ const useMutation = <TData, TError, TVariables>(
       if (!res.ok) {
         console.log("res not ok");
         if (res.status === 401) {
-          // TODO: Add refresh token / return user to sign in page
+          // TODO: Return user to sign in page
+          await refreshSession();
         }
         throw new Error("Unknown server error", { cause: res.status });
       }

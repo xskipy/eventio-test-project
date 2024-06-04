@@ -1,4 +1,6 @@
 import { apiUrl } from "@/config";
+import refreshSession from "@/utils/refreshToken";
+import { getFromStorage } from "@/utils/storage";
 import { QueryFunctionContext, QueryKey, useQuery as useReactQuery } from "@tanstack/react-query";
 
 const useQuery = <TData = unknown, TError = unknown>(queryKey: QueryKey) => {
@@ -14,20 +16,23 @@ const useQuery = <TData = unknown, TError = unknown>(queryKey: QueryKey) => {
           "API_KEY is not defined in environment variables. Check docs for more information."
         );
 
+      const accessToken = await getFromStorage("auth");
+
       const res = await fetch(`${apiUrl}${endpointUrl}` ?? "", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           APIKey,
           // TODO: add access token
-          //   ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
+          ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
         },
         signal,
       });
 
       if (!res.ok) {
         if (res.status === 401) {
-          // TODO: Add refresh token / return user to sign in page
+          // TODO: Return user to sign in page
+          await refreshSession();
         }
         throw new Error("Unknown server error", { cause: 500 });
       }
