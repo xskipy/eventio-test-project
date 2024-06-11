@@ -2,7 +2,7 @@ import SignupForm from "@/components/forms/SignupForm";
 import Text from "@/components/Text";
 import { View, Image, ScrollView } from "react-native";
 
-const Signup = () => {
+const SignupScreen = () => {
   return (
     <ScrollView
       contentContainerStyle={{
@@ -30,4 +30,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupScreen;

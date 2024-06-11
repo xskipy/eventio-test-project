@@ -11,6 +11,7 @@ import { saveToStorage } from "@/utils/storage";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAvoidingView } from "react-native";
 import { router } from "expo-router";
+import devLog from "@/utils/devLog";
 
 const LoginForm = () => {
   const methods = useForm<LoginFormValues>();
@@ -19,13 +20,14 @@ const LoginForm = () => {
     "POST",
     {
       onSuccess: (data) => {
-        console.log(`-----Succesfully logged in ${data.firstName} ${data.lastName}`);
+        devLog("info", `Succesfully logged in ${data.firstName} ${data.lastName}`);
 
         saveToStorage("userData", JSON.stringify(data));
+        devLog("info", `Navigating home`);
         router.replace("/(main)");
       },
       onError: (err) => {
-        console.log("-----Error logging in", { err });
+        devLog("debug", "Error logging in", { err });
 
         setFormError(methods, "email", " ");
         setFormError(
@@ -39,7 +41,7 @@ const LoginForm = () => {
   );
 
   const onLogin = (values: LoginFormValues) => {
-    console.log("values", { ...values });
+    devLog("debug", "Trying to log in with values:", { ...values });
     mutate(values);
   };
 

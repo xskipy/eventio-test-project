@@ -3,6 +3,7 @@ import Input from "@/components/Input";
 import Link from "@/components/Link";
 import Text from "@/components/Text";
 import { breakpoints } from "@/constants/theme";
+import devLog from "@/utils/devLog";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAvoidingView } from "react-native";
 
@@ -11,7 +12,7 @@ const SignupForm = () => {
 
   // TODO: fix types
   const onSignup = (values: any) => {
-    console.log("values", { values });
+    devLog("debug", "values", { values });
   };
 
   // TODO: fix keyboard view overlaying form

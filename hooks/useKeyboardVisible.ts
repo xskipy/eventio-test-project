@@ -6,11 +6,11 @@ const useKeyboardVisible = () => {
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", () => {
-      console.log("keyboard visible");
+      // console.log("keyboard visible");
       setKeyboardVisible(true);
     });
     const keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", () => {
-      console.log("keyboard hidden");
+      // console.log("keyboard hidden");
       setKeyboardVisible(false);
     });
 

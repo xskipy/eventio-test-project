@@ -1,49 +1,49 @@
 import { apiUrl } from "@/config";
-import refreshSession from "@/utils/refreshToken";
-import { getFromStorage } from "@/utils/storage";
+import { useAuth } from "@/contexts/AuthContext";
+import ErrorResponse from "@/types/api/ErrorResponse";
+import devLog from "@/utils/devLog";
+import getApiKey from "@/utils/getApiKey";
 import { QueryFunctionContext, QueryKey, useQuery as useReactQuery } from "@tanstack/react-query";
 
 const useQuery = <TData = unknown, TError = unknown>(queryKey: QueryKey) => {
   const [endpointUrl] = queryKey;
+  const { accessToken, refreshSession, isTokenExpired } = useAuth();
 
   return useReactQuery<TData, TError>({
     queryKey,
     queryFn: async ({ signal }: QueryFunctionContext) => {
-      const APIKey = process.env.API_KEY;
+      const APIKey = getApiKey();
 
-      if (!APIKey)
-        throw new Error(
-          "API_KEY is not defined in environment variables. Check docs for more information."
-        );
-
-      const accessToken = await getFromStorage("auth");
+      if (await isTokenExpired()) await refreshSession();
 
       const res = await fetch(`${apiUrl}${endpointUrl}` ?? "", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           APIKey,
-          // TODO: add access token
           ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
         },
         signal,
       });
 
       if (!res.ok) {
+        devLog("debug", "Mutation - Res not ok", { status: res.status });
         if (res.status === 401) {
-          // TODO: Return user to sign in page
+          devLog("debug", "refresh session?");
           await refreshSession();
         }
-        throw new Error("Unknown server error", { cause: 500 });
+        const data = (await res.json()) as ErrorResponse;
+
+        if (data?.message) {
+          devLog("error", "Mutation error, message:", data.message, "code", data.code);
+          throw new Error(data.message, { cause: data?.code ?? res.status });
+        }
+
+        devLog("debug", "Response data: ", { data });
+        throw new Error("Unknown server error", { cause: res.status });
       }
 
       const data = await res.json();
-
-      if (data?.errors) {
-        const { message } = data.errors[0];
-
-        throw new Error(message, { cause: res.status });
-      }
 
       return data;
     },

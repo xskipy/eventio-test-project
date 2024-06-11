@@ -6,6 +6,14 @@ export const colors = {
   green: "#22D486",
   black: "#323C46",
   white: "#FFF",
+  background: {
+    primary: "#F9F9FB",
+    secondary: "#FFFFFF",
+  },
+  tabs: {
+    active: "#000000",
+    inactive: "#72727B",
+  },
 };
 
 export const breakpoints = {

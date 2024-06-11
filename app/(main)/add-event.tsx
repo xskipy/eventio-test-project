@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-const EventsScreen = () => {
+const AddEventScreen = () => {
   return (
     <View
       style={{
@@ -14,4 +14,4 @@ const EventsScreen = () => {
   );
 };
 
-export default EventsScreen;
+export default AddEventScreen;

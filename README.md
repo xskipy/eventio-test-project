@@ -25,7 +25,7 @@ For instructions how to install Bun follow their [website](https://bun.sh/)!
 - Copy API key from email or project documentation to `.env.development` file
 
   ```
-  API_KEY=abc123456-789-9bce87-654cde
+  EXPO_PUBLIC_API_KEY=abc123456-789-9bce87-654cde
   ```
 
   _In production, the CI will have production API key saved in its configuration files._
@@ -68,6 +68,10 @@ bun run android
 - [Google Docs](https://docs.google.com/document/d/167XfckICXbD52TVxN2a83VxcZPCxmIKJ2HfOBR3vaG4/)
 
 - [Eventio API](https://eventio-testproject-api.vercel.app/)
+
+### Bun
+
+[Using Expo with Bun](https://docs.expo.dev/guides/using-bun/)
 
 ### Expo
 

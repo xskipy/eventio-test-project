@@ -2,7 +2,7 @@ import LoginForm from "@/components/forms/LoginForm";
 import Text from "@/components/Text";
 import { View, Image } from "react-native";
 
-const Login = () => {
+const LoginScreen = () => {
   return (
     <View
       style={{
@@ -28,4 +28,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginScreen;

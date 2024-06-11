@@ -1,6 +1,8 @@
 import { apiUrl } from "@/config";
-import refreshSession from "@/utils/refreshToken";
-import { getFromStorage, saveToStorage } from "@/utils/storage";
+import { useAuth } from "@/contexts/AuthContext";
+import ErrorResponse from "@/types/api/ErrorResponse";
+import devLog from "@/utils/devLog";
+import getApiKey from "@/utils/getApiKey";
 import {
   MutationKey,
   UseMutationOptions,
@@ -15,20 +17,16 @@ const useMutation = <TData, TError, TVariables>(
   options?: UseMutationOptions<TData, TError, TVariables>
 ) => {
   const [endpointUrl] = mutationKey;
+  const { setAccessToken, setRefreshToken, accessToken, refreshSession, isTokenExpired } =
+    useAuth();
 
   return useReactMutation<TData, TError, TVariables>({
     mutationKey,
     mutationFn: async (variables) => {
-      const APIKey = process.env.API_KEY;
+      devLog("debug", "Executing mutation");
+      const APIKey = getApiKey();
 
-      console.log("MUTATING!", { APIKey });
-
-      if (!APIKey)
-        throw new Error(
-          "API_KEY is not defined in environment variables. Check docs for more information."
-        );
-
-      const accessToken = await getFromStorage("auth");
+      if (await isTokenExpired()) await refreshSession();
 
       const res = await fetch(`${apiUrl}${endpointUrl}` ?? "", {
         method: fetchMethod,
@@ -40,18 +38,26 @@ const useMutation = <TData, TError, TVariables>(
         ...(variables ? { body: JSON.stringify(variables) } : {}),
       });
 
-      console.log("RES", { res });
+      // devLog("debug", "RES", { res });
 
       if (!res.ok) {
-        console.log("res not ok");
+        devLog("debug", "Mutation - Res not ok", { status: res.status });
         if (res.status === 401) {
-          // TODO: Return user to sign in page
+          devLog("debug", "refresh session?");
           await refreshSession();
         }
+        const data = (await res.json()) as ErrorResponse;
+
+        if (data?.message) {
+          devLog("error", "Mutation error, message:", data.message, "code", data.code);
+          throw new Error(data.message, { cause: data?.code ?? res.status });
+        }
+
+        devLog("debug", "Response data: ", { data });
         throw new Error("Unknown server error", { cause: res.status });
       }
 
-      console.log("headers", {
+      devLog("debug", "headers", {
         // headers: res.headers,
         auth: res.headers.get("authorization"),
         refreshToken: res.headers.get("refresh-token"),
@@ -59,20 +65,20 @@ const useMutation = <TData, TError, TVariables>(
 
       // Handle Recieved Auth headers if present
       const auth = res.headers.get("authorization");
-      if (auth) saveToStorage("auth", auth);
+      if (auth) setAccessToken(auth);
 
       const refreshToken = res.headers.get("refresh-token");
-      if (refreshToken) saveToStorage("refreshToken", refreshToken);
+      if (refreshToken) setRefreshToken(refreshToken);
+
+      devLog("debug", {
+        // headers: res.headers,
+        auth: res.headers.get("authorization"),
+        refreshToken: res.headers.get("refresh-token"),
+      });
 
       const data = await res.json();
 
-      if (data?.errors) {
-        const { message } = data.errors[0];
-
-        throw new Error(message, { cause: res.status });
-      }
-
-      console.log("mutation data:", { data });
+      devLog("debug", "mutation data:", { data });
 
       return data;
     },
