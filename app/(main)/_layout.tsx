@@ -20,6 +20,9 @@ const MainLayout = () => {
           headerTransparent: true,
           headerTitleStyle: {
             fontFamily: "Inter",
+            fontWeight: 400,
+            fontSize: 18,
+            lineHeight: 24,
           },
           tabBarStyle: {
             height: 72,
@@ -44,7 +47,7 @@ const MainLayout = () => {
           name="add-event"
           options={{
             title: "Add Event",
-            tabBarIcon: ({ color }) => <PlusIcon />,
+            tabBarIcon: () => <PlusIcon />,
           }}
           listeners={() => ({
             tabPress: (e) => {
@@ -70,7 +73,6 @@ const MainLayout = () => {
             tabBarButton: () => null,
             // TODO: Add back button
             headerLeft: ProfileHeaderButtons,
-            // tabBarStyle: { display: "none" },
           }}
         />
       </Tabs>

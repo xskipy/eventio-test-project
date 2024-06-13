@@ -10,7 +10,7 @@ const EventsScreen = () => {
         flex: 1,
       }}
     >
-      <Events header={<Filter />} showFiltered />
+      <Events header={<Filter />} displayEvents="filtered" />
     </View>
   );
 };

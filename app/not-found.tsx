@@ -5,11 +5,11 @@ import { View } from "react-native";
 import ErrorIcon from "@/assets/images/icons/error.svg";
 import { breakpoints } from "@/constants/theme";
 import { router } from "expo-router";
+import { useAuth } from "@/contexts/AuthContext";
 
 // TODO: Properly style NotFoundScreen
 const NotFoundScreen = () => {
   const navigateHome = () => {
-    // TODO: Navigate to events or Login
     router.navigate("/");
   };
 

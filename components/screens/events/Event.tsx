@@ -9,7 +9,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import UserData from "@/types/UserData";
 import getEventStartTime from "@/utils/getEventStartTime";
 import useEvent from "@/hooks/useEvent";
-import { EventsLayout } from "@/types/EventsContext";
 import { useEvents } from "@/contexts/EventsContext";
 
 export interface EventProps {
@@ -40,7 +39,7 @@ const Event: FC<EventProps> = ({ date, title, owner, description, attendees, cap
     }
 
     return { title: "Join", onClick: joinEvent, type: "default" };
-  }, []);
+  }, [isOwner, isAttending]);
 
   const eventStart = getEventStartTime(date);
 
@@ -54,15 +53,19 @@ const Event: FC<EventProps> = ({ date, title, owner, description, attendees, cap
         onPressOut={buttonProps.onClick}
       />
     ),
-    []
+    [buttonProps]
   );
 
   return (
     <Paper style={[styles.container, layout === "lines" ? styles.lineLayout : undefined]}>
       <View style={[styles.header, layout === "lines" ? styles.lineHeader : undefined]}>
-        <Text type="subtitle">{eventStart}</Text>
-        <Text type="title">{title}</Text>
-        <Text type="subtitle">{`${owner.firstName} ${owner.lastName}`}</Text>
+        <Text style={styles.date} type="subtitle">
+          {eventStart}
+        </Text>
+        <Text style={styles.title} type="title">
+          {title}
+        </Text>
+        <Text style={styles.author} type="subtitle">{`${owner.firstName} ${owner.lastName}`}</Text>
       </View>
       {layout === "grid" && (
         <>
@@ -70,8 +73,8 @@ const Event: FC<EventProps> = ({ date, title, owner, description, attendees, cap
             {description}
           </Text>
           <View style={styles.footer}>
-            <Text type="subtitle">
-              <UserIcon style={styles.icon} />
+            <Text style={styles.attendence} type="subtitle">
+              <UserIcon fill={colors.tertiary} style={styles.icon} />
               {attendees.length} of {capacity}
             </Text>
             {interactionButton}
@@ -110,6 +113,29 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  title: {
+    fontWeight: 500,
+    fontSize: 20,
+    lineHeight: 24,
+  },
+  date: {
+    fontWeight: 400,
+    fontSize: 12,
+    lineHeight: 16,
+    color: colors.tertiary,
+  },
+  author: {
+    fontWeight: 400,
+    fontSize: 14,
+    lineHeight: 16,
+    color: colors.secondary,
+  },
+  attendence: {
+    fontWeight: 500,
+    fontSize: 14,
+    lineHeight: 18,
+    color: colors.secondary,
   },
 });
 

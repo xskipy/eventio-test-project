@@ -5,11 +5,11 @@ import Text from "@/components/Text";
 import EventsHeaderButtons from "@/components/headers/EventsHeaderButtons";
 import { breakpoints } from "@/constants/theme";
 
-// TODO: Finish styling the screen
 const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <Events
+        displayEvents="attending"
         header={
           <>
             <ProfileHeader />
