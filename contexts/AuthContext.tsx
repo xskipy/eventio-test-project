@@ -1,5 +1,4 @@
 import { apiUrl, tokenCheckDelta } from "@/config";
-import useRefreshSession from "@/hooks/useRefreshSession";
 import IAuthContext from "@/types/AuthContext";
 import UserData from "@/types/UserData";
 import devLog from "@/utils/devLog";
@@ -24,12 +23,13 @@ const AuthContext = createContext({} as IAuthContext);
 const clearStorageUserData = () => {
   clearFromStorage("accessToken");
   clearFromStorage("refreshToken");
+  clearFromStorage("userData");
 };
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
-  const [authLoading, setAuthLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [userData, setUserData] = useState<UserData | null>(null);
 
   // Properly logout user and return to login
@@ -39,12 +39,18 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     setAccessToken(null);
     setRefreshToken(null);
     setUserData(null);
-    router.replace("/");
+    router.replace("/login");
   };
 
+  /**
+   *
+   * @param freshToken (optional) New or different token that should be checked
+   * Uses accessToken in context by default
+   * @returns true if Token expired or will expire soon (tokenCheckDelta)
+   */
   const isTokenExpired = async (freshToken?: string): Promise<boolean> => {
     const token = freshToken ?? accessToken;
-    devLog("debug", "Checking token expired", { token });
+    devLog("debug", "Checking if token expired\n", { token });
 
     // No token set, treat it as expired
     if (!token) {
@@ -53,8 +59,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     // Token invalid or expired
-    const refreshExp = jwtDecode(token)?.exp;
-    if (!refreshExp || refreshExp <= new Date().getTime() + tokenCheckDelta) {
+    const tokenExp = jwtDecode(token)?.exp;
+
+    if (!tokenExp || tokenExp - tokenCheckDelta <= new Date().getTime() / 1000) {
       devLog("debug", "Token expired");
       return true;
     }
@@ -62,102 +69,6 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     devLog("debug", "Token not expired");
     return false;
   };
-
-  const refreshSession = async () => {
-    devLog("debug", "Refreshing session");
-
-    if (!isUserLoggedIn) {
-      devLog("info", "User not logged in. Exiting refreshSession");
-      return;
-    }
-    const APIKey = getApiKey();
-
-    if (!refreshToken) {
-      devLog("info", "Refresh token not present. Exiting refreshSession. Logging out user.");
-      logoutUser();
-      return;
-    }
-
-    try {
-      // Refresh token invalid or expired
-      const refreshExp = jwtDecode(refreshToken)?.exp;
-      if (!refreshExp || refreshExp <= new Date().getTime()) {
-        logoutUser();
-        return;
-      }
-    } catch (error) {
-      console.error("Something went wrong decoding token", error);
-      router.replace("/error");
-    }
-
-    try {
-      const res = await fetch(`${apiUrl}auth/refresh-token` ?? "", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          APIKey,
-        },
-        body: JSON.stringify({
-          refreshToken,
-        }),
-      });
-
-      if (res.ok) {
-        // console.log("headers", {
-        //   // headers: res.headers,
-        //   auth: res.headers.get("authorization"),
-        //   refreshToken: res.headers.get("refresh-token"),
-        // });
-
-        // Save new Token
-        const auth = res.headers.get("authorization");
-        if (auth) setAccessToken(auth);
-
-        const data = await res.json();
-
-        // Refresh user data;
-        setUserData(data);
-        return;
-      }
-
-      devLog("debug", "Response not OK, logging out user.");
-      logoutUser();
-    } catch (error) {
-      console.error("Something went wrong refreshing token", error);
-      // router.replace("/error");
-    }
-  };
-
-  useEffect(() => {
-    const loadDataStorage = async () => {
-      setAuthLoading(true);
-
-      const storageAccToken = await getFromStorage("accessToken");
-      if (storageAccToken) setAccessToken(storageAccToken);
-
-      const storageRefToken = await getFromStorage("refreshToken");
-      if (storageRefToken) setAccessToken(storageRefToken);
-
-      const storageUsData = await getFromStorage("userData");
-
-      try {
-        if (storageUsData) setUserData(JSON.parse(storageUsData));
-      } catch (error) {
-        console.error("Error parsing access token from storage");
-
-        // TODO: Probably better to clear storage and return to login
-        router.replace("error");
-        setAuthLoading(false);
-        return;
-      }
-
-      if (storageAccToken && (await isTokenExpired(storageAccToken))) await refreshSession();
-
-      setAuthLoading(false);
-    };
-
-    loadDataStorage();
-  }, []);
 
   const onSetRefreshToken = (newToken: string) => {
     setStateAndStorage("refreshToken", setRefreshToken, newToken);
@@ -171,10 +82,141 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     setStateAndStorage<UserData>("userData", setUserData, newData);
   };
 
-  const isUserLoggedIn = useMemo(
-    () => Boolean(userData && accessToken && refreshToken),
-    [userData, accessToken, refreshToken]
-  );
+  /**
+   *
+   * Refreshes access token
+   * @param freshRefreshToken (optional) New or different refresh token that would be used
+   * Uses accessToken in context by default
+   *
+   */
+  const refreshSession = async (freshRefreshToken?: string) => {
+    devLog("debug", "Refreshing session");
+    const refToken = freshRefreshToken ?? refreshToken;
+
+    if (!isUserLoggedIn() && !freshRefreshToken) {
+      devLog("info", "User not logged in. Exiting refreshSession");
+      return;
+    }
+    const APIKey = getApiKey();
+
+    if (!refToken) {
+      devLog("info", "Refresh token not present. Exiting refreshSession. Logging out user.");
+      logoutUser();
+      return;
+    }
+
+    try {
+      devLog("info", "Decoding JWT Token.");
+
+      // Refresh token invalid or expired
+      const refreshExp = jwtDecode(refToken)?.exp;
+
+      if (!refreshExp || refreshExp <= new Date().getTime() / 1000) {
+        devLog("info", "Refresh token expired.");
+        logoutUser();
+        return;
+      }
+    } catch (error) {
+      console.error("Something went wrong decoding token", error);
+      router.replace("/error");
+    }
+
+    devLog("info", "Fetching new token.", `${apiUrl}auth/refresh-token`);
+    try {
+      const res = await fetch(`${apiUrl}auth/refresh-token` ?? "", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          APIKey,
+        },
+        body: JSON.stringify({
+          refreshToken: refToken,
+        }),
+      });
+
+      if (res.ok) {
+        // console.log("headers", {
+        //   // headers: res.headers,
+        //   auth: res.headers.get("authorization"),
+        //   refreshToken: res.headers.get("refresh-token"),
+        // });
+
+        // Save new Token
+        const auth = res.headers.get("authorization");
+        if (auth) onSetAccessToken(auth);
+
+        const data = await res.json();
+        devLog("debug", "Token Refreshed!.");
+
+        // Refresh user data;
+        onSetUserData(data);
+        return;
+      }
+
+      // DEBUG: REMOVE LATER
+      try {
+        const errorData = await res.json();
+        devLog("error", "Response error:", errorData);
+      } catch (err) {
+        devLog("error", "Could not parse response data:", err);
+      }
+
+      devLog("debug", "Response not OK, logging out user.");
+      logoutUser();
+    } catch (error) {
+      console.error("Something went wrong refreshing token", error);
+      router.replace("/error");
+    }
+  };
+
+  useEffect(() => {
+    const loadDataStorage = async () => {
+      setAuthLoading(true);
+      devLog("info", "Getting data from storage");
+
+      const storageAccToken = await getFromStorage("accessToken");
+      if (storageAccToken) setAccessToken(storageAccToken);
+      devLog("debug", { storageAccToken: storageAccToken });
+
+      const storageRefToken = await getFromStorage("refreshToken");
+      if (storageRefToken) setRefreshToken(storageRefToken);
+      devLog("debug", { storageRefToken: storageRefToken });
+
+      const storageUsData = await getFromStorage("userData");
+      devLog("debug", { storageUsData: storageUsData });
+
+      try {
+        if (storageUsData) setUserData(JSON.parse(storageUsData));
+      } catch (error) {
+        devLog("error", "Error parsing access token from storage", error);
+
+        // TODO: Probably better to clear storage and return to login
+        router.replace("error");
+        setAuthLoading(false);
+        return;
+      }
+
+      // If token expired (or will expire soon) refresh session
+      if (storageAccToken && storageRefToken && (await isTokenExpired(storageAccToken)))
+        await refreshSession(storageRefToken);
+
+      devLog("info", "Loading from data storage completed.");
+
+      setAuthLoading(false);
+    };
+
+    loadDataStorage();
+  }, []);
+
+  const isUserLoggedIn = () => {
+    devLog("debug", "Is User Logged In?", {
+      is: !!(userData && accessToken && refreshToken),
+      userData,
+      accessToken,
+      refreshToken,
+    });
+    return Boolean(userData && accessToken && refreshToken);
+  };
 
   return (
     <AuthContext.Provider
@@ -189,6 +231,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
         setUserData: onSetUserData,
         refreshSession,
         isTokenExpired,
+        logoutUser,
       }}
     >
       {children}

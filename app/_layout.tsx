@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import { breakpoints, colors } from "@/constants/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryRetryCount } from "@/config";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import devLog from "@/utils/devLog";
 
 // export const unstable_settings = {
 //   // Ensure any route can link back to `/`
@@ -15,9 +16,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: queryRetryCount,
-    },
-    mutations: {
       retry: queryRetryCount,
     },
   },
@@ -31,6 +29,7 @@ const RootLayout = () => {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      devLog("info", "fonts loaded");
     }
   }, [loaded]);
 
@@ -42,7 +41,6 @@ const RootLayout = () => {
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
         <Stack
-          initialRouteName="/index"
           screenOptions={{
             contentStyle: {
               padding: breakpoints.padding,
@@ -50,9 +48,18 @@ const RootLayout = () => {
             },
             headerShown: false,
           }}
-          // TODO: set route based on user logged in
         >
-          <Stack.Screen options={{ title: "Login" }} name="index" />
+          <Stack.Screen
+            options={{
+              title: "Splash",
+              contentStyle: {
+                padding: 0,
+                backgroundColor: colors.black,
+              },
+            }}
+            name="index"
+          />
+          <Stack.Screen options={{ title: "Login" }} name="login" />
           <Stack.Screen options={{ title: "Sign Up" }} name="signup" />
           <Stack.Screen options={{ title: "Something went wrong" }} name="error" />
           <Stack.Screen

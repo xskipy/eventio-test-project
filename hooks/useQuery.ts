@@ -16,22 +16,21 @@ const useQuery = <TData = unknown, TError = unknown>(queryKey: QueryKey) => {
 
       if (await isTokenExpired()) await refreshSession();
 
+      devLog("info", "Quering..", `${apiUrl}${endpointUrl}`);
+
       const res = await fetch(`${apiUrl}${endpointUrl}` ?? "", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           APIKey,
-          ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
+          ...(accessToken ? { authorization: accessToken } : {}),
         },
         signal,
       });
 
       if (!res.ok) {
         devLog("debug", "Mutation - Res not ok", { status: res.status });
-        if (res.status === 401) {
-          devLog("debug", "refresh session?");
-          await refreshSession();
-        }
+
         const data = (await res.json()) as ErrorResponse;
 
         if (data?.message) {
@@ -44,6 +43,8 @@ const useQuery = <TData = unknown, TError = unknown>(queryKey: QueryKey) => {
       }
 
       const data = await res.json();
+
+      devLog("info", "Done quering..", endpointUrl);
 
       return data;
     },

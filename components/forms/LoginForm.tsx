@@ -12,17 +12,20 @@ import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAvoidingView } from "react-native";
 import { router } from "expo-router";
 import devLog from "@/utils/devLog";
+import { useAuth } from "@/contexts/AuthContext";
 
 const LoginForm = () => {
   const methods = useForm<LoginFormValues>();
+  const { setUserData } = useAuth();
+
   const { mutate, status } = useMutation<AuthResponse, unknown, LoginFormValues>(
     ["auth/native"],
     "POST",
     {
       onSuccess: (data) => {
         devLog("info", `Succesfully logged in ${data.firstName} ${data.lastName}`);
+        setUserData(data);
 
-        saveToStorage("userData", JSON.stringify(data));
         devLog("info", `Navigating home`);
         router.replace("/(main)");
       },
@@ -47,8 +50,14 @@ const LoginForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <Input name="email" required validation="email" placeholder="Email" />
-      <Input name="password" required placeholder="Password" type="password" />
+      <Input name="email" required validation="email" placeholder="Email" autoCapitalize="none" />
+      <Input
+        name="password"
+        required
+        placeholder="Password"
+        type="password"
+        autoCapitalize="none"
+      />
       <KeyboardAvoidingView
         behavior="position"
         style={{

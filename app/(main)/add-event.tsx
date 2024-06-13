@@ -9,7 +9,7 @@ const AddEventScreen = () => {
         alignItems: "center",
       }}
     >
-      <Text>Main events screen.</Text>
+      <Text>Add event modal.</Text>
     </View>
   );
 };

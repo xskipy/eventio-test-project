@@ -14,9 +14,14 @@ export const colors = {
     active: "#000000",
     inactive: "#72727B",
   },
+  status: {
+    disabled: "#E4E4EA",
+  },
 };
 
 export const breakpoints = {
   padding: 24,
   margin: 16,
 };
+
+export const hitSlop = 10;

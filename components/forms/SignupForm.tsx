@@ -40,7 +40,7 @@ const SignupForm = () => {
           title="SIGN IN"
         />
         <Text style={{ marginTop: 16, textAlign: "center" }} type="subtitle">
-          Already have an account? <Link to="/">Log in</Link>
+          Already have an account? <Link to="/login">Log in</Link>
         </Text>
       </KeyboardAvoidingView>
     </FormProvider>

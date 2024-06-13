@@ -23,7 +23,7 @@ const useMutation = <TData, TError, TVariables>(
   return useReactMutation<TData, TError, TVariables>({
     mutationKey,
     mutationFn: async (variables) => {
-      devLog("debug", "Executing mutation");
+      devLog("debug", "Executing mutation", `${apiUrl}${endpointUrl}`);
       const APIKey = getApiKey();
 
       if (await isTokenExpired()) await refreshSession();
@@ -33,19 +33,14 @@ const useMutation = <TData, TError, TVariables>(
         headers: {
           "Content-Type": "application/json",
           APIKey,
-          ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
+          ...(accessToken ? { authorization: accessToken } : {}),
         },
         ...(variables ? { body: JSON.stringify(variables) } : {}),
       });
 
-      // devLog("debug", "RES", { res });
-
       if (!res.ok) {
         devLog("debug", "Mutation - Res not ok", { status: res.status });
-        if (res.status === 401) {
-          devLog("debug", "refresh session?");
-          await refreshSession();
-        }
+
         const data = (await res.json()) as ErrorResponse;
 
         if (data?.message) {
@@ -68,6 +63,7 @@ const useMutation = <TData, TError, TVariables>(
       if (auth) setAccessToken(auth);
 
       const refreshToken = res.headers.get("refresh-token");
+      devLog("warn", "useMutation refresh token", { refreshToken });
       if (refreshToken) setRefreshToken(refreshToken);
 
       devLog("debug", {

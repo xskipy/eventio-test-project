@@ -1,15 +1,16 @@
-import { Text, View } from "react-native";
+import Events from "@/components/screens/events/Events";
+import Filter from "@/components/screens/events/Filter";
+import { EventsProvider } from "@/contexts/EventsContext";
+import { View } from "react-native";
 
 const EventsScreen = () => {
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
-      <Text>Main events screen.</Text>
+      <Events header={<Filter />} showFiltered />
     </View>
   );
 };
