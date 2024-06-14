@@ -17,7 +17,7 @@ const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
   const { userData } = useAuth();
 
   useEffect(() => {
-    devLog("info", "Events data changed", { events, isLoading });
+    // devLog("info", "Events data changed", { events, isLoading });
     const test = events[0];
     devLog(
       "info",
@@ -36,9 +36,8 @@ const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
     }
   }, [displayEvents, events, filteredEvents]);
 
-  const renderEvent: ListRenderItem<EventType> = useCallback(({ item }) => {
-    devLog("info", "Rendering event", item.title);
-    return (
+  const renderEvent: ListRenderItem<EventType> = useCallback(
+    ({ item }) => (
       <Event
         date={item.startsAt}
         title={item.title}
@@ -48,8 +47,9 @@ const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
         capacity={item.capacity}
         id={item.id}
       />
-    );
-  }, []);
+    ),
+    []
+  );
 
   return (
     <FlatList
@@ -60,7 +60,6 @@ const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
       ListHeaderComponent={header}
       ListEmptyComponent={isLoading ? <ActivityIndicator /> : null}
       refreshing={isLoading}
-      // data={isLoading ? [] : data}
       data={data}
       renderItem={renderEvent}
       keyExtractor={(item) => item.id}

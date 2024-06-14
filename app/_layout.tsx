@@ -61,6 +61,14 @@ const RootLayout = () => {
           />
           <Stack.Screen options={{ title: "Login" }} name="login" />
           <Stack.Screen options={{ title: "Sign Up" }} name="signup" />
+          <Stack.Screen
+            options={{
+              title: "Add event",
+              contentStyle: {},
+              presentation: "modal",
+            }}
+            name="add-event"
+          />
           <Stack.Screen options={{ title: "Something went wrong" }} name="error" />
           <Stack.Screen
             options={{

@@ -1,5 +1,5 @@
 import { breakpoints, colors } from "@/constants/theme";
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 import CalendarIcon from "@/assets/images/icons/calendar.svg";
 import UserIcon from "@/assets/images/icons/user.svg";
 import PlusIcon from "@/components/PlusIcon";
@@ -54,6 +54,7 @@ const MainLayout = () => {
               e.preventDefault();
               // Navigate to modal
               devLog("info", "show modal");
+              router.push("/add-event");
             },
           })}
         />
