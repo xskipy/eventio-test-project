@@ -7,22 +7,22 @@
 const getEventStartTime = (dateString: string) => {
   const date = new Date(dateString);
 
-  const options: Intl.DateTimeFormatOptions = {
+  const dateOptions: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
     day: "numeric",
-    hour: undefined,
-    minute: undefined,
-    hour12: true,
+    timeZone: "UTC",
   };
 
-  // Format the date and time in a single step
-  const formattedDate = date.toLocaleDateString("en-US", options);
-  const formattedTime = date.toLocaleTimeString("en-US", {
+  const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "numeric",
     minute: "numeric",
     hour12: true,
-  });
+    timeZone: "UTC",
+  };
+
+  const formattedDate = date.toLocaleDateString("en-US", dateOptions);
+  const formattedTime = date.toLocaleTimeString("en-US", timeOptions);
 
   return `${formattedDate} – ${formattedTime}`;
 };
