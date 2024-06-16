@@ -1,17 +1,8 @@
-import { Text, View } from "react-native";
-
+// This file exists purely for the file-based router,
+// and is not actually used
+// The AddEventScreen exists in @/app/add-event.tsx
 const AddEventScreen = () => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Add event modal.</Text>
-    </View>
-  );
+  return null;
 };
 
 export default AddEventScreen;

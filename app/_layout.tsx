@@ -2,11 +2,13 @@ import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { breakpoints, colors } from "@/constants/theme";
+import { breakpoints, colors, headerTitleStyle } from "@/constants/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryRetryCount } from "@/config";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import devLog from "@/utils/devLog";
+import IconButton from "@/components/IconButton";
+import CloseIcon from "@/assets/images/icons/close.svg";
 
 // export const unstable_settings = {
 //   // Ensure any route can link back to `/`
@@ -63,9 +65,16 @@ const RootLayout = () => {
           <Stack.Screen options={{ title: "Sign Up" }} name="signup" />
           <Stack.Screen
             options={{
-              title: "Add event",
-              contentStyle: {},
+              title: "Create new event",
               presentation: "modal",
+              headerShown: true,
+              contentStyle: {
+                backgroundColor: colors.background.secondary,
+                paddingTop: breakpoints.padding,
+              },
+              headerTitleStyle: headerTitleStyle,
+              headerTransparent: true,
+              headerRight: () => <IconButton icon={<CloseIcon height={14} width={14} />} />,
             }}
             name="add-event"
           />

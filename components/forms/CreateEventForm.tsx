@@ -1,0 +1,101 @@
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import useMutation from "@/hooks/useMutation";
+import setFormError from "@/utils/setFormError";
+import { FormProvider, useForm } from "react-hook-form";
+import { View } from "react-native";
+import { router } from "expo-router";
+import devLog from "@/utils/devLog";
+import CreateEventValues from "@/types/forms/CreateEventValues";
+import Event from "@/types/Event";
+import CreateEventRequest from "@/types/api/CreateEventRequest";
+import { useAuth } from "@/contexts/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
+import UserData from "@/types/UserData";
+import ErrorResponse from "@/types/api/ErrorResponse";
+import getEventStartTime from "@/utils/getEventStartTime";
+import convertToISO from "@/utils/convertToISO";
+
+const CreateEventForm = () => {
+  const methods = useForm<CreateEventValues>();
+  const queryClient = useQueryClient();
+  const { userData } = useAuth();
+
+  const { mutate, status } = useMutation<Event, ErrorResponse, CreateEventRequest>(
+    ["events"],
+    "POST",
+    {
+      onSuccess: (data) => {
+        devLog("info", `Succesfully created event`);
+        queryClient.refetchQueries({ queryKey: ["events"] });
+
+        devLog("info", `Navigating home`);
+        router.replace("/(main)");
+      },
+      onError: (err) => {
+        devLog("debug", "Error logging in", { err });
+
+        // TODO: Revisit error logging here
+        setFormError(methods, "capacity", "Oops! Something went wrong creating event. Try again.");
+        queryClient.refetchQueries({ queryKey: ["events"] });
+      },
+      onMutate: (event) => {
+        if (!userData) return;
+
+        const currentEvents = queryClient.getQueryData<Event[]>(["events"]);
+        const currentTime = new Date().toISOString();
+
+        currentEvents?.push({
+          ...event,
+          id: `optimistic-${new Date().getTime()}`,
+          owner: userData,
+          ownerId: userData.id,
+          attendees: [userData],
+          createdAt: currentTime,
+          updatedAt: currentTime,
+        });
+
+        queryClient.setQueryData<Event[]>(["events"], () => currentEvents);
+      },
+      retry: false,
+    }
+  );
+
+  const onCreateEvent = (values: CreateEventValues) => {
+    devLog("debug", "Trying to create event values:", { ...values });
+    mutate({
+      title: values.title,
+      description: values.description,
+      capacity: values.capacity,
+      startsAt: convertToISO(values.time, values.date),
+    });
+  };
+
+  // TODO: TIME/DATE components could be added
+  // for better user experience.
+  return (
+    <FormProvider {...methods}>
+      <Input name="title" required placeholder="Title" />
+      <Input name="description" required placeholder="Description" />
+      <Input name="date" required validation="date" placeholder="Date" />
+      <Input name="time" required validation="time" placeholder="Time" />
+      <Input type="number" name="capacity" required placeholder="Capacity" />
+      <View
+        style={{
+          marginTop: 40,
+          width: "100%",
+        }}
+      >
+        <Button
+          loading={status === "pending"}
+          style={{ paddingVertical: 18 }}
+          onPressOut={methods.handleSubmit(onCreateEvent)}
+          title="CREATE"
+          size="l"
+        />
+      </View>
+    </FormProvider>
+  );
+};
+
+export default CreateEventForm;

@@ -9,6 +9,12 @@ const COLORS: Record<LogType, string> = {
 
 const RESET = "\u001b[0m";
 
+/**
+ * Utility function to help log/tract application behaviour
+ * Will not log in production. Only in development env
+ * @param type Log type (`info` | `warn` | `error` | `debug`)
+ * @param message Message to log
+ */
 function devLog(message: any): void;
 function devLog(type: LogType, ...messages: any[]): void;
 function devLog(typeOrMessage: LogType | any, ...messages: any[]): void {

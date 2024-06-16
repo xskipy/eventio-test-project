@@ -1,3 +1,5 @@
+import { TextStyle } from "react-native";
+
 export const colors = {
   primary: "#000000",
   secondary: "#72727B",
@@ -25,3 +27,10 @@ export const breakpoints = {
 };
 
 export const hitSlop = 10;
+
+// Pick needs to be used because of specific type of StackScreen.options.headerTitleStyle
+export const headerTitleStyle: Pick<TextStyle, "fontFamily" | "fontWeight" | "fontSize"> = {
+  fontFamily: "Inter",
+  fontWeight: 400,
+  fontSize: 18,
+};

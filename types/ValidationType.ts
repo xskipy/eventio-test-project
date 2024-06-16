@@ -1,3 +1,3 @@
-type ValidationType = "email" | "password";
+type ValidationType = "email" | "password" | "date" | "time";
 
 export default ValidationType;

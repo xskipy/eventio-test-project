@@ -1,4 +1,4 @@
-import { breakpoints, colors } from "@/constants/theme";
+import { breakpoints, colors, headerTitleStyle } from "@/constants/theme";
 import { router, Tabs } from "expo-router";
 import CalendarIcon from "@/assets/images/icons/calendar.svg";
 import UserIcon from "@/assets/images/icons/user.svg";
@@ -18,12 +18,7 @@ const MainLayout = () => {
           tabBarInactiveTintColor: colors.tabs.inactive,
           tabBarShowLabel: false,
           headerTransparent: true,
-          headerTitleStyle: {
-            fontFamily: "Inter",
-            fontWeight: 400,
-            fontSize: 18,
-            lineHeight: 24,
-          },
+          headerTitleStyle: headerTitleStyle,
           tabBarStyle: {
             height: 72,
           },

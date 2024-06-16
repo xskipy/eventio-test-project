@@ -17,12 +17,17 @@ import getInputRules from "@/utils/getInputRules";
 import useKeyboardVisible from "@/hooks/useKeyboardVisible";
 interface InputProps extends Omit<TextInputProps, "value" | "secureTextEntry"> {
   initialValue?: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "number";
   name: string;
   validation?: ValidationType;
   required?: boolean;
 }
 
+/**
+ * An Input component that allows user to input text / number / password
+ * @requires FormProvider - Must be used withing Form context
+ *
+ */
 const Input = ({
   name,
   initialValue = "",
@@ -82,6 +87,7 @@ const Input = ({
               }}
               onFocus={() => setIsFocused(true)}
               {...rest}
+              keyboardType={type === "number" ? "number-pad" : "default"}
               style={styles.input}
               value={value}
               onChangeText={onChange}
