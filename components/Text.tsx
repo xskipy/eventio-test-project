@@ -1,34 +1,29 @@
 import { Text as RNText, type TextProps as RNTextProps, StyleSheet } from "react-native";
 
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { colors } from "@/constants/theme";
+import { FC } from "react";
 
-export type TextProps = RNTextProps & {
-  lightColor?: string;
-  darkColor?: string;
-  type?: "default" | "title" | "semiBold" | "bold" | "subtitle" | "link" | "error";
-};
+export interface TextProps extends RNTextProps {
+  type?: "default" | "title" | "semiBold" | "bold" | "subtitle" | "link" | "error" | "paperTitle";
+}
 
-const Text = ({ style, lightColor, darkColor, type = "default", ...rest }: TextProps) => {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-
-  return (
-    <RNText
-      style={[
-        { color, fontFamily: "Inter" },
-        type === "default" ? styles.default : undefined,
-        type === "title" ? styles.title : undefined,
-        type === "semiBold" ? styles.semiBold : undefined,
-        type === "bold" ? styles.bold : undefined,
-        type === "subtitle" ? styles.subtitle : undefined,
-        type === "link" ? styles.link : undefined,
-        type === "error" ? styles.error : undefined,
-        style,
-      ]}
-      {...rest}
-    />
-  );
-};
+const Text: FC<TextProps> = ({ style, type = "default", ...rest }) => (
+  <RNText
+    style={[
+      { fontFamily: "Inter" },
+      type === "default" ? styles.default : undefined,
+      type === "title" ? styles.title : undefined,
+      type === "semiBold" ? styles.semiBold : undefined,
+      type === "bold" ? styles.bold : undefined,
+      type === "subtitle" ? styles.subtitle : undefined,
+      type === "link" ? styles.link : undefined,
+      type === "error" ? styles.error : undefined,
+      type === "paperTitle" ? styles.paperTitle : undefined,
+      style,
+    ]}
+    {...rest}
+  />
+);
 
 export const styles = StyleSheet.create({
   default: {
@@ -68,6 +63,11 @@ export const styles = StyleSheet.create({
     fontWeight: 400,
     lineHeight: 16,
     color: colors.error,
+  },
+  paperTitle: {
+    fontWeight: 500,
+    fontSize: 20,
+    lineHeight: 24,
   },
 });
 

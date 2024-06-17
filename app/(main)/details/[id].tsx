@@ -1,3 +1,4 @@
+import Attendees from "@/components/screens/events/Attendees";
 import Event from "@/components/screens/events/Event";
 import useQuery from "@/hooks/useQuery";
 import EventType from "@/types/Event";
@@ -6,7 +7,7 @@ import { ActivityIndicator, View } from "react-native";
 
 const EventDetailsScreen = () => {
   const { id } = useLocalSearchParams();
-  const { data: event, isLoading } = useQuery<EventType>([`event/${id}`]);
+  const { data: event, isLoading } = useQuery<EventType>([`events/${id}`]);
 
   // TODO: Style properly
   if (isLoading) return <ActivityIndicator />;
@@ -20,15 +21,8 @@ const EventDetailsScreen = () => {
         flex: 1,
       }}
     >
-      <Event
-        date={event?.startsAt}
-        title={event?.title}
-        owner={event?.owner}
-        description={event?.description}
-        attendees={event?.attendees}
-        capacity={event?.capacity}
-        id={event?.id}
-      />
+      <Event data={event} disableDetailPress />
+      <Attendees data={event.attendees} />
     </View>
   );
 };

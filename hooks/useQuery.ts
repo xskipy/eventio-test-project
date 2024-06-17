@@ -38,13 +38,11 @@ const useQuery = <TData = unknown, TError = unknown>(queryKey: QueryKey) => {
           throw new Error(data.message, { cause: data?.code ?? res.status });
         }
 
-        devLog("debug", "Response data: ", { data });
         throw new Error("Unknown server error", { cause: res.status });
       }
 
       const data = await res.json();
 
-      devLog("info", "Done quering..", endpointUrl);
 
       return data;
     },

@@ -1,4 +1,3 @@
-import Text from "@/components/Text";
 import { breakpoints, colors } from "@/constants/theme";
 import { FC } from "react";
 import { StyleSheet, View, ViewProps } from "react-native";

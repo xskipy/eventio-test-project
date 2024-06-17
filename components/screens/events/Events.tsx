@@ -37,17 +37,7 @@ const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
   }, [displayEvents, events, filteredEvents]);
 
   const renderEvent: ListRenderItem<EventType> = useCallback(
-    ({ item }) => (
-      <Event
-        date={item.startsAt}
-        title={item.title}
-        owner={item.owner}
-        description={item.description}
-        attendees={item.attendees}
-        capacity={item.capacity}
-        id={item.id}
-      />
-    ),
+    ({ item }) => <Event data={item} />,
     []
   );
 

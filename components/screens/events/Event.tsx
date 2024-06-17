@@ -1,5 +1,5 @@
 import Paper from "@/components/Paper";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Text from "@/components/Text";
 import Button, { ButtonProps } from "@/components/Button";
 import { FC, useMemo } from "react";
@@ -10,19 +10,17 @@ import UserData from "@/types/UserData";
 import getEventStartTime from "@/utils/getEventStartTime";
 import useEvent from "@/hooks/useEvent";
 import { useEvents } from "@/contexts/EventsContext";
+import EventType from "@/types/Event";
+import { router } from "expo-router";
 
 export interface EventProps {
-  date: string;
-  title: string;
-  owner: UserData;
-  description: string;
-  attendees: UserData[];
-  capacity: number;
-  id: string;
+  data: EventType;
+  disableDetailPress?: boolean;
 }
 
-const Event: FC<EventProps> = ({ date, title, owner, description, attendees, capacity, id }) => {
+const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
   const { userData } = useAuth();
+  const { startsAt, title, owner, description, attendees, capacity, id } = data;
 
   const { joinEvent, leaveEvent, editEvent } = useEvent(id);
   const { layout } = useEvents();
@@ -41,7 +39,10 @@ const Event: FC<EventProps> = ({ date, title, owner, description, attendees, cap
     return { title: "Join", onClick: joinEvent, type: "default" };
   }, [isOwner, isAttending]);
 
-  const eventStart = getEventStartTime(date);
+  const eventStart = getEventStartTime(startsAt);
+
+  const navigateToDetail = () =>
+    router.navigate({ pathname: "/(main)/details/[id]", params: { id: data.id } });
 
   const interactionButton = useMemo(
     () => (
@@ -56,15 +57,19 @@ const Event: FC<EventProps> = ({ date, title, owner, description, attendees, cap
     [buttonProps]
   );
 
+  const eventTitle = <Text type="paperTitle">{title}</Text>;
+
   return (
     <Paper style={[styles.container, layout === "lines" ? styles.lineLayout : undefined]}>
       <View style={[styles.header, layout === "lines" ? styles.lineHeader : undefined]}>
         <Text style={styles.date} type="subtitle">
           {eventStart}
         </Text>
-        <Text style={styles.title} type="title">
-          {title}
-        </Text>
+        {disableDetailPress ? (
+          eventTitle
+        ) : (
+          <TouchableOpacity onPress={navigateToDetail}>{eventTitle}</TouchableOpacity>
+        )}
         <Text style={styles.author} type="subtitle">{`${owner.firstName} ${owner.lastName}`}</Text>
       </View>
       {layout === "grid" && (
@@ -113,11 +118,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
-  },
-  title: {
-    fontWeight: 500,
-    fontSize: 20,
-    lineHeight: 24,
   },
   date: {
     fontWeight: 400,

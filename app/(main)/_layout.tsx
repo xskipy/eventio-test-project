@@ -7,7 +7,7 @@ import EventsHeaderButtons from "@/components/headers/EventsHeaderButtons";
 import ProfileHeaderButtons from "@/components/headers/ProfileHeaderButtons";
 import devLog from "@/utils/devLog";
 import { EventsProvider } from "@/contexts/EventsContext";
-// import PlusIcon from "@/assets/images/icons/plus.svg";
+import HeaderBackButton from "@/components/headers/HeaderBackButton";
 
 const MainLayout = () => {
   return (
@@ -65,10 +65,9 @@ const MainLayout = () => {
           name="details/[id]"
           options={{
             title: "Event details",
-            tabBarIcon: ({ color }) => null,
+            tabBarIcon: () => null,
             tabBarButton: () => null,
-            // TODO: Add back button
-            headerLeft: ProfileHeaderButtons,
+            headerLeft: HeaderBackButton,
           }}
         />
       </Tabs>

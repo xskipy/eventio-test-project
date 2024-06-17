@@ -63,6 +63,10 @@ bun run android
 
 ## Resources
 
+### Contributing
+
+Read the [CONTRIBUTING.md](CONTRIBUTING.md) file to learn about coding guidelines and conventions
+
 ### Project Documentation
 
 - [Google Docs](https://docs.google.com/document/d/167XfckICXbD52TVxN2a83VxcZPCxmIKJ2HfOBR3vaG4/)

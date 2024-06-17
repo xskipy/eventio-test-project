@@ -7,13 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryRetryCount } from "@/config";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import devLog from "@/utils/devLog";
-import IconButton from "@/components/IconButton";
-import CloseIcon from "@/assets/images/icons/close.svg";
-
-// export const unstable_settings = {
-//   // Ensure any route can link back to `/`
-//   initialRouteName: "error",
-// };
+import HeaderCloseButton from "@/components/headers/HeaderCloseButton";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,7 +68,7 @@ const RootLayout = () => {
               },
               headerTitleStyle: headerTitleStyle,
               headerTransparent: true,
-              headerRight: () => <IconButton icon={<CloseIcon height={14} width={14} />} />,
+              headerRight: HeaderCloseButton,
             }}
             name="add-event"
           />

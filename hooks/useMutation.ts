@@ -52,11 +52,6 @@ const useMutation = <TData, TError, TVariables>(
         throw new Error("Unknown server error", { cause: res.status });
       }
 
-      devLog("debug", "headers", {
-        // headers: res.headers,
-        auth: res.headers.get("authorization"),
-        refreshToken: res.headers.get("refresh-token"),
-      });
 
       // Handle Recieved Auth headers if present
       const auth = res.headers.get("authorization");
@@ -74,7 +69,6 @@ const useMutation = <TData, TError, TVariables>(
 
       const data = await res.json();
 
-      devLog("debug", "mutation data:", { data });
 
       return data;
     },
