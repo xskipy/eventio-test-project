@@ -19,7 +19,7 @@ const SplashScreen = () => {
 
   useEffect(() => {
     const navigatorReady = rootNavigationState?.key != null;
-    devLog("debug", "Splash Screen - ", { navigatorReady, authLoading, isUserLoggedIn });
+    devLog("debug", "Splash Screen ", { navigatorReady, authLoading, isUserLoggedIn });
 
     if (authLoading || !navigatorReady) return;
 

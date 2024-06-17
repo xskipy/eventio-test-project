@@ -2,7 +2,6 @@ import Event from "@/components/screens/events/Event";
 import { breakpoints } from "@/constants/theme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEvents } from "@/contexts/EventsContext";
-import devLog from "@/utils/devLog";
 import { FC, useCallback, useEffect, useMemo } from "react";
 import { ActivityIndicator, FlatList, ListRenderItem } from "react-native";
 import EventType from "@/types/Event";
@@ -15,15 +14,6 @@ interface EventsProps {
 const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
   const { events, filteredEvents, isLoading, refetch } = useEvents();
   const { userData } = useAuth();
-
-  useEffect(() => {
-    // devLog("info", "Events data changed", { events, isLoading });
-    const test = events[0];
-    devLog(
-      "info",
-      `${test?.title} at: ${test?.attendees.length} user participating: ${test?.attendees.some((at) => at.id === userData?.id)}`
-    );
-  }, [events, isLoading]);
 
   const data = useMemo(() => {
     switch (displayEvents) {

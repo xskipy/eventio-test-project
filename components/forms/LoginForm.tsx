@@ -44,7 +44,6 @@ const LoginForm = () => {
   );
 
   const onLogin = (values: LoginFormValues) => {
-    devLog("debug", "Trying to log in with values:", { ...values });
     mutate(values);
   };
 

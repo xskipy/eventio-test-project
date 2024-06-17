@@ -7,6 +7,14 @@ import devLog from "@/utils/devLog";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAvoidingView } from "react-native";
 
+/**
+ * SignupForm component
+ * @todo Hookup to API
+ * @todo Stylize View properly
+ * @todo Move styles into StyleSheet
+ * @todo Error handling
+ *
+ */
 const SignupForm = () => {
   const methods = useForm();
 

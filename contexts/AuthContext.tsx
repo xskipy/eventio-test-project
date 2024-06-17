@@ -50,7 +50,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
    */
   const isTokenExpired = async (freshToken?: string): Promise<boolean> => {
     const token = freshToken ?? accessToken;
-    devLog("debug", "Checking if token expired\n", { token });
+    devLog("debug", "Checking if token expired");
 
     // No token set, treat it as expired
     if (!token) {
@@ -121,7 +121,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       router.replace("/error");
     }
 
-    devLog("info", "Fetching new token.", `${apiUrl}auth/refresh-token`);
+    devLog("info", "Fetching new token.");
     try {
       const res = await fetch(`${apiUrl}auth/refresh-token` ?? "", {
         method: "POST",
@@ -135,12 +135,6 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       });
 
       if (res.ok) {
-        // console.log("headers", {
-        //   // headers: res.headers,
-        //   auth: res.headers.get("authorization"),
-        //   refreshToken: res.headers.get("refresh-token"),
-        // });
-
         // Save new Token
         const auth = res.headers.get("authorization");
         if (auth) onSetAccessToken(auth);
@@ -153,14 +147,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
         return;
       }
 
-      // DEBUG: REMOVE LATER
-      try {
-        const errorData = await res.json();
-        devLog("error", "Response error:", errorData);
-      } catch (err) {
-        devLog("error", "Could not parse response data:", err);
-      }
-
+      // TODO: Revisit more complex error handling
       devLog("debug", "Response not OK, logging out user.");
       logoutUser();
     } catch (error) {
@@ -176,21 +163,18 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
       const storageAccToken = await getFromStorage("accessToken");
       if (storageAccToken) setAccessToken(storageAccToken);
-      devLog("debug", { storageAccToken: storageAccToken });
 
       const storageRefToken = await getFromStorage("refreshToken");
       if (storageRefToken) setRefreshToken(storageRefToken);
-      devLog("debug", { storageRefToken: storageRefToken });
 
       const storageUsData = await getFromStorage("userData");
-      devLog("debug", { storageUsData: storageUsData });
 
       try {
         if (storageUsData) setUserData(JSON.parse(storageUsData));
       } catch (error) {
         devLog("error", "Error parsing access token from storage", error);
 
-        // TODO: Probably better to clear storage and return to login
+        // TODO: Revisit - Maybe better to logoutUser() and return to login
         router.replace("error");
         setAuthLoading(false);
         return;
@@ -208,15 +192,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     loadDataStorage();
   }, []);
 
-  const isUserLoggedIn = () => {
-    devLog("debug", "Is User Logged In?", {
-      is: !!(userData && accessToken && refreshToken),
-      userData,
-      accessToken,
-      refreshToken,
-    });
-    return Boolean(userData && accessToken && refreshToken);
-  };
+  const isUserLoggedIn = () => Boolean(userData && accessToken && refreshToken);
 
   return (
     <AuthContext.Provider

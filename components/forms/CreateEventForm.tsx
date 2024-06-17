@@ -11,9 +11,7 @@ import Event from "@/types/Event";
 import CreateEventRequest from "@/types/api/CreateEventRequest";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
-import UserData from "@/types/UserData";
 import ErrorResponse from "@/types/api/ErrorResponse";
-import getEventStartTime from "@/utils/getEventStartTime";
 import convertToISO from "@/utils/convertToISO";
 
 const CreateEventForm = () => {
@@ -25,7 +23,7 @@ const CreateEventForm = () => {
     ["events"],
     "POST",
     {
-      onSuccess: (data) => {
+      onSuccess: () => {
         devLog("info", `Succesfully created event`);
         queryClient.refetchQueries({ queryKey: ["events"] });
 
@@ -62,7 +60,6 @@ const CreateEventForm = () => {
   );
 
   const onCreateEvent = (values: CreateEventValues) => {
-    devLog("debug", "Trying to create event values:", { ...values });
     mutate({
       title: values.title,
       description: values.description,

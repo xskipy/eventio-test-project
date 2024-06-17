@@ -4,7 +4,6 @@ import LinesIcon from "@/assets/images/icons/lines.svg";
 import { breakpoints, colors } from "@/constants/theme";
 import { useEvents } from "@/contexts/EventsContext";
 import { EventsLayout } from "@/types/EventsContext";
-import devLog from "@/utils/devLog";
 import IconButton from "@/components/IconButton";
 
 const EventsHeaderButtons = () => {
@@ -14,7 +13,6 @@ const EventsHeaderButtons = () => {
     layout === type ? colors.primary : colors.tertiary;
 
   const onSetLayout = (newLayout: EventsLayout) => () => {
-    devLog("info", "Setting layout", newLayout);
     setLayout(newLayout);
   };
 

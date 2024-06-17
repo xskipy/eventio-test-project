@@ -5,7 +5,6 @@ import UserIcon from "@/assets/images/icons/user.svg";
 import PlusIcon from "@/components/PlusIcon";
 import EventsHeaderButtons from "@/components/headers/EventsHeaderButtons";
 import ProfileHeaderButtons from "@/components/headers/ProfileHeaderButtons";
-import devLog from "@/utils/devLog";
 import { EventsProvider } from "@/contexts/EventsContext";
 import HeaderBackButton from "@/components/headers/HeaderBackButton";
 
@@ -48,7 +47,6 @@ const MainLayout = () => {
             tabPress: (e) => {
               e.preventDefault();
               // Navigate to modal
-              devLog("info", "show modal");
               router.push("/add-event");
             },
           })}

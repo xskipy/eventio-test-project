@@ -12,7 +12,7 @@ const useEvent = (id: string) => {
 
   const optimisticQueryUpdate = useCallback(
     (type: "left" | "joined") => {
-      devLog("info", "---Optimistic update", type);
+      devLog("info", "Event Optimistic update", type);
       if (!userData) return;
 
       const previousEvents = queryClient.getQueryData<Event[]>(["events"]);
@@ -20,12 +20,7 @@ const useEvent = (id: string) => {
 
       const eventIndex = previousEvents?.findIndex((ev) => ev.id === id);
 
-      devLog("debug", "found event index", eventIndex);
-
-      devLog("debug", "Testing event index", eventIndex === -1);
       if (eventIndex === -1) return;
-
-      devLog("debug", "Setting user whaetver", type);
 
       if ((type = "left")) {
         const userIdIndex = previousEvents[eventIndex].attendees.findIndex(
@@ -36,8 +31,6 @@ const useEvent = (id: string) => {
       if ((type = "joined")) {
         previousEvents[eventIndex].attendees.push(userData);
       }
-
-      devLog("debug", "setting events data", previousEvents);
 
       queryClient.setQueryData<Event[]>(["events"], () => previousEvents);
     },
@@ -52,11 +45,9 @@ const useEvent = (id: string) => {
         optimisticQueryUpdate("joined");
       },
       onSuccess: () => {
-        devLog("info", "Joined the event!");
         queryClient.refetchQueries({ queryKey: ["events"] });
       },
       onError: () => {
-        devLog("error", "Something went wrong joining the event");
         // Invalidate because of Optimistic Update
         queryClient.invalidateQueries({ queryKey: ["events"] });
       },
@@ -68,14 +59,12 @@ const useEvent = (id: string) => {
     "DELETE",
     {
       onSuccess: () => {
-        devLog("info", "Left the event!");
         queryClient.refetchQueries({ queryKey: ["events"] });
       },
       onMutate: () => {
         optimisticQueryUpdate("left");
       },
       onError: () => {
-        devLog("error", "Something went wrong leaving the event");
         // Invalidate because of Optimistic Update
         queryClient.invalidateQueries({ queryKey: ["events"] });
       },
