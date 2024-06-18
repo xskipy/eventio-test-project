@@ -1,3 +1,4 @@
+import Layout from "@/components/screens/Layout";
 import { colors } from "@/constants/theme";
 import { useAuth } from "@/contexts/AuthContext";
 import devLog from "@/utils/devLog";
@@ -34,13 +35,7 @@ const SplashScreen = () => {
   }, [authLoading, rootNavigationState]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <Layout type="centered">
       <Image
         style={{
           width: 96,
@@ -48,7 +43,7 @@ const SplashScreen = () => {
         }}
         source={require("../assets/images/white-logo.png")}
       />
-    </View>
+    </Layout>
   );
 };
 

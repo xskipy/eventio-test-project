@@ -5,7 +5,7 @@ import Text from "@/components/Text";
 import { breakpoints } from "@/constants/theme";
 import devLog from "@/utils/devLog";
 import { FormProvider, useForm } from "react-hook-form";
-import { KeyboardAvoidingView } from "react-native";
+import { KeyboardAvoidingView, StyleSheet } from "react-native";
 
 /**
  * SignupForm component
@@ -33,21 +33,9 @@ const SignupForm = () => {
       <Input required validation={"email"} name="email" placeholder="Email" />
       <Input required name="password" placeholder="Password" type="password" />
       <Input required name="repeatpassword" placeholder="Repeat password" type="password" />
-      <KeyboardAvoidingView
-        style={{
-          marginTop: 40,
-          // flex: 1,
-          width: "100%",
-          justifyContent: "flex-end",
-          paddingBottom: breakpoints.padding,
-        }}
-      >
-        <Button
-          style={{ paddingVertical: 18 }}
-          onPressOut={methods.handleSubmit(onSignup)}
-          title="SIGN IN"
-        />
-        <Text style={{ marginTop: 16, textAlign: "center" }} type="subtitle">
+      <KeyboardAvoidingView style={styles.buttonContainer}>
+        <Button style={styles.button} onPressOut={methods.handleSubmit(onSignup)} title="SIGN IN" />
+        <Text style={styles.text} type="subtitle">
           Already have an account? <Link to="/login">Log in</Link>
         </Text>
       </KeyboardAvoidingView>
@@ -56,3 +44,14 @@ const SignupForm = () => {
 };
 
 export default SignupForm;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    marginTop: 40,
+    width: "100%",
+    justifyContent: "flex-end",
+    paddingBottom: breakpoints.padding,
+  },
+  button: { paddingVertical: 18 },
+  text: { marginTop: 16, textAlign: "center" },
+});

@@ -1,17 +1,18 @@
 import { breakpoints } from "@/constants/theme";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import CreateEventForm from "@/components/forms/CreateEventForm";
+import Layout from "@/components/screens/Layout";
 
 const AddEventScreen = () => (
-  <View
-    style={{
-      flex: 1,
-      padding: breakpoints.padding,
-      alignItems: "center",
-    }}
-  >
+  <Layout type="alignedCenter" style={styles.container}>
     <CreateEventForm />
-  </View>
+  </Layout>
 );
 
 export default AddEventScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: breakpoints.padding,
+  },
+});

@@ -3,7 +3,7 @@ import Input from "@/components/Input";
 import useMutation from "@/hooks/useMutation";
 import setFormError from "@/utils/setFormError";
 import { FormProvider, useForm } from "react-hook-form";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { router } from "expo-router";
 import devLog from "@/utils/devLog";
 import CreateEventValues from "@/types/forms/CreateEventValues";
@@ -77,15 +77,10 @@ const CreateEventForm = () => {
       <Input name="date" required validation="date" placeholder="Date" />
       <Input name="time" required validation="time" placeholder="Time" />
       <Input type="number" name="capacity" required placeholder="Capacity" />
-      <View
-        style={{
-          marginTop: 40,
-          width: "100%",
-        }}
-      >
+      <View style={styles.buttonContainer}>
         <Button
           loading={status === "pending"}
-          style={{ paddingVertical: 18 }}
+          style={styles.button}
           onPressOut={methods.handleSubmit(onCreateEvent)}
           title="CREATE"
           size="l"
@@ -96,3 +91,11 @@ const CreateEventForm = () => {
 };
 
 export default CreateEventForm;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    marginTop: 40,
+    width: "100%",
+  },
+  button: { paddingVertical: 18 },
+});

@@ -28,15 +28,15 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
   const isAttending = attendees.some((attendee) => attendee.id === userData?.id);
   const isOwner = owner.id === userData?.id;
 
-  const buttonProps = useMemo(() => {
+  const buttonProps: ButtonProps = useMemo(() => {
     if (isOwner) {
-      return { title: "Edit", onClick: editEvent, type: "gray" };
+      return { title: "Edit", onPress: editEvent, type: "gray" };
     }
     if (isAttending) {
-      return { title: "Leave", onClick: leaveEvent, type: "red" };
+      return { title: "Leave", onPress: leaveEvent, type: "red" };
     }
 
-    return { title: "Join", onClick: joinEvent, type: "default" };
+    return { title: "Join", onPress: joinEvent, type: "primary" };
   }, [isOwner, isAttending]);
 
   const eventStart = getEventStartTime(startsAt);
@@ -48,10 +48,9 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
     () => (
       <Button
         size="s"
-        // Not the cleanest solution
-        type={buttonProps.type as ButtonProps["type"]}
+        type={buttonProps.type}
         title={buttonProps.title}
-        onPressOut={buttonProps.onClick}
+        onPressOut={buttonProps.onPress}
       />
     ),
     [buttonProps]

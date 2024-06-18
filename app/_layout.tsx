@@ -8,6 +8,7 @@ import { queryRetryCount } from "@/config";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import devLog from "@/utils/devLog";
 import HeaderCloseButton from "@/components/headers/HeaderCloseButton";
+import { stackOptions } from "@/constants/screenOptions";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,15 +37,7 @@ const RootLayout = () => {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <Stack
-          screenOptions={{
-            contentStyle: {
-              padding: breakpoints.padding,
-              backgroundColor: colors.white,
-            },
-            headerShown: false,
-          }}
-        >
+        <Stack screenOptions={stackOptions}>
           <Stack.Screen
             options={{
               title: "Splash",

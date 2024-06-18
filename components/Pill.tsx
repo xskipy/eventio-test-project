@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: colors.tertiary,
     borderWidth: 1,
+    backgroundColor: colors.background.secondary,
   },
   text: {
     color: colors.secondary,

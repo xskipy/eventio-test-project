@@ -9,16 +9,17 @@ import LoginFormValues from "@/types/forms/LoginFormValues";
 import setFormError from "@/utils/setFormError";
 import { saveToStorage } from "@/utils/storage";
 import { FormProvider, useForm } from "react-hook-form";
-import { KeyboardAvoidingView } from "react-native";
+import { KeyboardAvoidingView, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import devLog from "@/utils/devLog";
 import { useAuth } from "@/contexts/AuthContext";
+import ErrorResponse from "@/types/api/ErrorResponse";
 
 const LoginForm = () => {
   const methods = useForm<LoginFormValues>();
   const { setUserData } = useAuth();
 
-  const { mutate, status } = useMutation<AuthResponse, unknown, LoginFormValues>(
+  const { mutate, status } = useMutation<AuthResponse, ErrorResponse, LoginFormValues>(
     ["auth/native"],
     "POST",
     {
@@ -57,22 +58,14 @@ const LoginForm = () => {
         type="password"
         autoCapitalize="none"
       />
-      <KeyboardAvoidingView
-        behavior="position"
-        style={{
-          flex: 1,
-          width: "100%",
-          justifyContent: "flex-end",
-          paddingBottom: breakpoints.padding,
-        }}
-      >
+      <KeyboardAvoidingView behavior="position" style={styles.buttonContainer}>
         <Button
           loading={status === "pending"}
-          style={{ paddingVertical: 18 }}
+          style={styles.button}
           onPressOut={methods.handleSubmit(onLogin)}
           title="SIGN IN"
         />
-        <Text style={{ marginTop: 16, textAlign: "center" }} type="subtitle">
+        <Text style={styles.text} type="subtitle">
           Don't have an account? <Link to="signup">Sign up</Link>
         </Text>
       </KeyboardAvoidingView>
@@ -81,3 +74,14 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "flex-end",
+    paddingBottom: breakpoints.padding,
+  },
+  button: { paddingVertical: 18 },
+  text: { marginTop: 16, textAlign: "center" },
+});

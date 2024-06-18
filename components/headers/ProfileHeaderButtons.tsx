@@ -4,6 +4,7 @@ import { breakpoints } from "@/constants/theme";
 import { Device } from "@/utils/deviceInfo";
 import { useAuth } from "@/contexts/AuthContext";
 import IconButton from "@/components/IconButton";
+import devLog from "@/utils/devLog";
 
 const ProfileHeaderButtons = () => {
   const { logoutUser } = useAuth();
@@ -13,7 +14,9 @@ const ProfileHeaderButtons = () => {
   };
 
   // TODO: Implementation
-  const onEditProfile = () => {};
+  const onEditProfile = () => {
+    devLog("info", "Edit Profile pressed");
+  };
 
   const onOptionsPress = () => {
     if (Device.isAndroid) {

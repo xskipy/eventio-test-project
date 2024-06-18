@@ -3,7 +3,7 @@ import { breakpoints } from "@/constants/theme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEvents } from "@/contexts/EventsContext";
 import { FC, useCallback, useEffect, useMemo } from "react";
-import { ActivityIndicator, FlatList, ListRenderItem } from "react-native";
+import { ActivityIndicator, FlatList, ListRenderItem, StyleSheet } from "react-native";
 import EventType from "@/types/Event";
 
 interface EventsProps {
@@ -33,9 +33,7 @@ const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
 
   return (
     <FlatList
-      style={{
-        marginTop: breakpoints.margin,
-      }}
+      style={styles.listContainer}
       onRefresh={refetch}
       ListHeaderComponent={header}
       ListEmptyComponent={isLoading ? <ActivityIndicator /> : null}
@@ -49,3 +47,9 @@ const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
 };
 
 export default Events;
+
+const styles = StyleSheet.create({
+  listContainer: {
+    marginTop: breakpoints.margin,
+  },
+});

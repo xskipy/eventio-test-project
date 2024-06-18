@@ -6,6 +6,7 @@ import ErrorIcon from "@/assets/images/icons/error.svg";
 import { breakpoints } from "@/constants/theme";
 import { router } from "expo-router";
 import { useAuth } from "@/contexts/AuthContext";
+import Layout from "@/components/screens/Layout";
 
 // TODO: Properly style NotFoundScreen
 const NotFoundScreen = () => {
@@ -14,11 +15,7 @@ const NotFoundScreen = () => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <Layout>
       <View
         style={{
           alignItems: "center",
@@ -39,7 +36,7 @@ const NotFoundScreen = () => {
       >
         <Button type="black" onPressOut={navigateHome} title="Home" />
       </View>
-    </View>
+    </Layout>
   );
 };
 

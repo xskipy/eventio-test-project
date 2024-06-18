@@ -4,26 +4,17 @@ import Text from "@/components/Text";
 import { View } from "react-native";
 import ErrorIcon from "@/assets/images/icons/error.svg";
 import { breakpoints } from "@/constants/theme";
+import Layout from "@/components/screens/Layout";
 
 // TODO: Properly style ErrorPage
 const ErrorScreen = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <View
-        style={{
-          alignItems: "center",
-          flex: 1,
-          justifyContent: "center",
-        }}
-      >
+    <Layout>
+      <Layout type="centered">
         <ErrorIcon />
         <Text type="title">Something went wrong</Text>
         <Text type="subtitle">Something went wrong, please try it again.</Text>
-      </View>
+      </Layout>
       <View
         style={{
           // flex: 1,
@@ -37,7 +28,7 @@ const ErrorScreen = () => {
           title="Try again"
         />
       </View>
-    </View>
+    </Layout>
   );
 };
 

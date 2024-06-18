@@ -1,17 +1,12 @@
 import Events from "@/components/screens/events/Events";
 import Filter from "@/components/screens/events/Filter";
-import { EventsProvider } from "@/contexts/EventsContext";
-import { View } from "react-native";
+import Layout from "@/components/screens/Layout";
 
 const EventsScreen = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <Layout>
       <Events header={<Filter />} displayEvents="filtered" />
-    </View>
+    </Layout>
   );
 };
 

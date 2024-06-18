@@ -7,28 +7,12 @@ import EventsHeaderButtons from "@/components/headers/EventsHeaderButtons";
 import ProfileHeaderButtons from "@/components/headers/ProfileHeaderButtons";
 import { EventsProvider } from "@/contexts/EventsContext";
 import HeaderBackButton from "@/components/headers/HeaderBackButton";
+import { tabsContainerStyle, tabsOptions } from "@/constants/screenOptions";
 
 const MainLayout = () => {
   return (
     <EventsProvider>
-      <Tabs
-        screenOptions={{
-          tabBarActiveTintColor: colors.tabs.active,
-          tabBarInactiveTintColor: colors.tabs.inactive,
-          tabBarShowLabel: false,
-          headerTransparent: true,
-          headerTitleStyle: headerTitleStyle,
-          tabBarStyle: {
-            height: 72,
-          },
-          headerStatusBarHeight: 44,
-        }}
-        sceneContainerStyle={{
-          padding: breakpoints.padding,
-          backgroundColor: colors.background.primary,
-          paddingTop: 96,
-        }}
-      >
+      <Tabs screenOptions={tabsOptions} sceneContainerStyle={tabsContainerStyle}>
         <Tabs.Screen
           name="index"
           options={{

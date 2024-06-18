@@ -4,10 +4,11 @@ import { StyleSheet, View } from "react-native";
 import Text from "@/components/Text";
 import EventsHeaderButtons from "@/components/headers/EventsHeaderButtons";
 import { breakpoints } from "@/constants/theme";
+import Layout from "@/components/screens/Layout";
 
 const ProfileScreen = () => {
   return (
-    <View style={styles.container}>
+    <Layout>
       <Events
         displayEvents="attending"
         header={
@@ -20,12 +21,11 @@ const ProfileScreen = () => {
           </>
         }
       />
-    </View>
+    </Layout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
   eventsHeader: {
     marginTop: breakpoints.margin,
     flexDirection: "row",

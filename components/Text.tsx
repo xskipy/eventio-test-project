@@ -35,11 +35,13 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     fontWeight: "600",
+    color: colors.primary,
   },
   bold: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: "700",
+    color: colors.primary,
   },
   title: {
     fontSize: 24,
@@ -67,6 +69,7 @@ export const styles = StyleSheet.create({
   paperTitle: {
     fontWeight: 500,
     fontSize: 20,
+    color: colors.primary,
     lineHeight: 24,
   },
 });

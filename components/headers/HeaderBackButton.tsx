@@ -19,5 +19,6 @@ export default HeaderBackButton;
 const styles = StyleSheet.create({
   container: {
     marginLeft: breakpoints.margin,
+    paddingHorizontal: breakpoints.padding,
   },
 });

@@ -1,28 +1,13 @@
 import SignupForm from "@/components/forms/SignupForm";
 import Text from "@/components/Text";
-import { View, Image, ScrollView } from "react-native";
+import { StyleSheet, Image, ScrollView } from "react-native";
 
 const SignupScreen = () => {
   return (
-    <ScrollView
-      contentContainerStyle={{
-        alignItems: "center",
-      }}
-      style={{
-        flex: 1,
-      }}
-    >
-      <Image
-        style={{
-          width: 32,
-          height: 32,
-          marginTop: 56,
-          marginBottom: 40,
-        }}
-        source={require("../assets/images/logo-dark.png")}
-      />
+    <ScrollView contentContainerStyle={styles.contentContainerStyle} style={styles.container}>
+      <Image style={styles.logo} source={require("../assets/images/logo-dark.png")} />
       <Text type="title">Get started absolutely free..</Text>
-      <Text style={{ marginTop: 16 }} type="subtitle">
+      <Text style={styles.subtitle} type="subtitle">
         Enter your details below..
       </Text>
       <SignupForm />
@@ -31,3 +16,21 @@ const SignupScreen = () => {
 };
 
 export default SignupScreen;
+
+const styles = StyleSheet.create({
+  contentContainerStyle: {
+    alignItems: "center",
+  },
+  container: {
+    flex: 1,
+  },
+  logo: {
+    width: 32,
+    height: 32,
+    marginTop: 56,
+    marginBottom: 40,
+  },
+  subtitle: {
+    marginTop: 16,
+  },
+});

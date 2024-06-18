@@ -4,11 +4,16 @@ import ErrorResponse from "@/types/api/ErrorResponse";
 import Event from "@/types/Event";
 import devLog from "@/utils/devLog";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 const useEvent = (id: string) => {
   const queryClient = useQueryClient();
   const { userData } = useAuth();
+
+  const invalidateQueries = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ["events"] });
+    queryClient.invalidateQueries({ queryKey: [`events/${id}`] });
+  }, [queryClient]);
 
   const optimisticQueryUpdate = useCallback(
     (type: "left" | "joined") => {
@@ -33,6 +38,7 @@ const useEvent = (id: string) => {
       }
 
       queryClient.setQueryData<Event[]>(["events"], () => previousEvents);
+      queryClient.setQueryData<Event>([`events/${id}`], () => previousEvents[eventIndex]);
     },
     [queryClient, userData]
   );
@@ -45,11 +51,11 @@ const useEvent = (id: string) => {
         optimisticQueryUpdate("joined");
       },
       onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["events"] });
+        invalidateQueries();
       },
       onError: () => {
         // Invalidate because of Optimistic Update
-        queryClient.invalidateQueries({ queryKey: ["events"] });
+        invalidateQueries();
       },
     }
   );
@@ -59,14 +65,14 @@ const useEvent = (id: string) => {
     "DELETE",
     {
       onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["events"] });
+        invalidateQueries();
       },
       onMutate: () => {
         optimisticQueryUpdate("left");
       },
       onError: () => {
         // Invalidate because of Optimistic Update
-        queryClient.invalidateQueries({ queryKey: ["events"] });
+        invalidateQueries();
       },
     }
   );

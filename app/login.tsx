@@ -1,31 +1,31 @@
 import LoginForm from "@/components/forms/LoginForm";
+import Layout from "@/components/screens/Layout";
 import Text from "@/components/Text";
-import { View, Image } from "react-native";
+import { StyleSheet, Image } from "react-native";
 
 const LoginScreen = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-      }}
-    >
-      <Image
-        style={{
-          width: 32,
-          height: 32,
-          marginTop: 56,
-          marginBottom: 40,
-        }}
-        source={require("../assets/images/logo-dark.png")}
-      />
+    <Layout type="alignedCenter">
+      <Image style={styles.logo} source={require("../assets/images/logo-dark.png")} />
       <Text type="title">Sign in to Eventio.</Text>
-      <Text style={{ marginTop: 16 }} type="subtitle">
+      <Text style={styles.subtitle} type="subtitle">
         Enter your details below..
       </Text>
       <LoginForm />
-    </View>
+    </Layout>
   );
 };
 
 export default LoginScreen;
+
+const styles = StyleSheet.create({
+  logo: {
+    width: 32,
+    height: 32,
+    marginTop: 56,
+    marginBottom: 40,
+  },
+  subtitle: {
+    marginTop: 16,
+  },
+});
