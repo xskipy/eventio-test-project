@@ -37,6 +37,8 @@ const ProfileHeaderButtons = () => {
           style: "cancel",
         },
       ]);
+
+      return;
     }
 
     ActionSheetIOS.showActionSheetWithOptions(
