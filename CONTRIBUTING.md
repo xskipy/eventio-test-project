@@ -12,7 +12,7 @@ Our project follows a modular structure. Here's a brief overview of the main dir
 
 - `app/`: Contains the main application screens and layout.
 - `assets/`: Contains static assets like images and fonts.
-- `components/`: Contains all React components.
+- `components/`: Contains all (common) components.
   - `__tests__/`: Contains unit tests for components.
   - `forms/`: Contains form-related components.
   - `headers/`: Contains header components.
@@ -22,6 +22,7 @@ Our project follows a modular structure. Here's a brief overview of the main dir
 - `hooks/`: Contains custom hooks.
 - `types/`: TypeScript types used across the project.
 - `utils/`: Utility functions and helpers.
+  - `__tests__/`: Contains unit tests for utility functions.
 
 ## Guidelines
 
@@ -34,6 +35,7 @@ Our project follows a modular structure. Here's a brief overview of the main dir
 ### Naming Conventions
 
 - **Components**: Use PascalCase for component names, e.g., `ComponentName.tsx`.
+- **Screens**: Use kebab-case for component names, e.g., `add-event.tsx`. (following expo's convention)
 - **Props**: Use `Props` suffix for interface names defining component props, e.g., `ComponentNameProps`.
 - **Files**: Use kebab-case for filenames, e.g., `component-name.tsx`.
 - **Constants**: Use camelCase for regular constants and UPPER_SNAKE_CASE for environment variables, e.g., `const colors` and `const API_URL`.

@@ -77,8 +77,20 @@
   - Specify how to handle errors and integrate it into the application
   - Currently only LoginScreen and CreateEventScreen have BARE error handling
 
-- There are several `TODO:` tags inside the project hinting at parts of the application which need to be addressed
+- Review TODO: Tags:
+
+  - There are several `TODO:` tags inside the project hinting at parts of the application which need to be addressed
 
 - Component Testing
   - Add component testing via react-native-testing-library
   - Due to the time constrait there was not enough time to add component tests
+
+## Additional Notes
+
+### Setup Instructions
+
+- Available in [README.MD](README.md#get-started)
+
+### Code Conventions
+
+- All matters regarding code convetions are available in [CONTRIBUTING.MD](CONTRIBUTING.md)
