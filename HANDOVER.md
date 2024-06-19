@@ -81,4 +81,4 @@
 
 - Component Testing
   - Add component testing via react-native-testing-library
-  - Due to the time constrait there was not enough time to start setting up component testing
+  - Due to the time constrait there was not enough time to add component tests

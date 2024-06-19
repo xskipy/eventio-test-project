@@ -10,7 +10,7 @@ Eventio, a mobile app that allows registered users to sign up for and create eve
 
 This app is using [![Bun Logo!](/assets/images/bun_logo.png "Bun Logo") _Bun_](https://bun.sh/)!
 
-Make sure you are using `v.1.1.12`!
+Make sure you are using `v.1.1.13`!
 
 For instructions how to install Bun follow their [website](https://bun.sh/)!
 

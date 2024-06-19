@@ -6,7 +6,6 @@ import { FC, useMemo } from "react";
 import { breakpoints, colors } from "@/constants/theme";
 import UserIcon from "@/assets/images/icons/user.svg";
 import { useAuth } from "@/contexts/AuthContext";
-import UserData from "@/types/UserData";
 import getEventStartTime from "@/utils/getEventStartTime";
 import useEvent from "@/hooks/useEvent";
 import { useEvents } from "@/contexts/EventsContext";
@@ -47,6 +46,7 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
   const interactionButton = useMemo(
     () => (
       <Button
+        testID="event-button"
         size="s"
         type={buttonProps.type}
         title={buttonProps.title}
@@ -56,12 +56,16 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
     [buttonProps]
   );
 
-  const eventTitle = <Text type="paperTitle">{title}</Text>;
+  const eventTitle = (
+    <Text testID="event-title" type="paperTitle">
+      {title}
+    </Text>
+  );
 
   return (
     <Paper style={[styles.container, layout === "lines" ? styles.lineLayout : undefined]}>
       <View style={[styles.header, layout === "lines" ? styles.lineHeader : undefined]}>
-        <Text style={styles.date} type="subtitle">
+        <Text testID="event-start" style={styles.date} type="subtitle">
           {eventStart}
         </Text>
         {disableDetailPress ? (
@@ -69,17 +73,21 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
         ) : (
           <TouchableOpacity onPress={navigateToDetail}>{eventTitle}</TouchableOpacity>
         )}
-        <Text style={styles.author} type="subtitle">{`${owner.firstName} ${owner.lastName}`}</Text>
+        <Text
+          testID="event-author"
+          style={styles.author}
+          type="subtitle"
+        >{`${owner.firstName} ${owner.lastName}`}</Text>
       </View>
       {layout === "grid" && (
         <>
-          <Text style={styles.description} type="default">
+          <Text testID="event-description" style={styles.description} type="default">
             {description}
           </Text>
           <View style={styles.footer}>
             <View style={styles.capacityContainer}>
               <UserIcon fill={colors.tertiary} />
-              <Text style={styles.attendence} type="subtitle">
+              <Text testID="event-capacity" style={styles.attendence} type="subtitle">
                 {attendees.length} of {capacity}
               </Text>
             </View>
