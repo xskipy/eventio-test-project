@@ -15,6 +15,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import getErrorMessage from "@/utils/getErrorMessage";
 import getInputRules from "@/utils/getInputRules";
 import useKeyboardVisible from "@/hooks/useKeyboardVisible";
+import IconButton from "@/components/IconButton";
 interface InputProps extends Omit<TextInputProps, "value" | "secureTextEntry"> {
   initialValue?: string;
   type?: "text" | "password" | "number";
@@ -65,12 +66,10 @@ const Input = ({
         ]}
       >
         {type === "password" && (
-          // TODO: add highlight
-          <EyeIcon
+          <IconButton
             onPress={toggleSecureText}
             style={styles.displayPasswordIcon}
-            width={20}
-            height={13}
+            icon={<EyeIcon width={20} height={13} />}
           />
         )}
         <Controller

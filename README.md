@@ -1,4 +1,4 @@
-![Eventio Logo](/assets/images/white-logo.png "Eventio Logo")
+![Eventio Logo](/assets/images/logo-dark.png "Eventio Logo")
 
 # Eventio.
 
@@ -66,6 +66,8 @@ bun run android
 ### Contributing
 
 Read the [CONTRIBUTING.md](CONTRIBUTING.md) file to learn about coding guidelines and conventions
+
+And follow up in [HANDOVER.md](HANDOVER.md) that details the current state of the project.
 
 ### Project Documentation
 

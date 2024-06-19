@@ -14,8 +14,8 @@ const ProfileScreen = () => {
         header={
           <>
             <ProfileHeader />
-            <View style={styles.eventsHeader}>
-              <Text type="semiBold">My events</Text>
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerText}>My events</Text>
               <EventsHeaderButtons />
             </View>
           </>
@@ -26,7 +26,13 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  eventsHeader: {
+  headerText: {
+    marginLeft: breakpoints.margin,
+    fontWeight: 400,
+    fontSize: 18,
+    lineHeight: 24,
+  },
+  headerContainer: {
     marginTop: breakpoints.margin,
     flexDirection: "row",
     justifyContent: "space-between",

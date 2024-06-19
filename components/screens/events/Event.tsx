@@ -77,10 +77,12 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
             {description}
           </Text>
           <View style={styles.footer}>
-            <Text style={styles.attendence} type="subtitle">
-              <UserIcon fill={colors.tertiary} style={styles.icon} />
-              {attendees.length} of {capacity}
-            </Text>
+            <View style={styles.capacityContainer}>
+              <UserIcon fill={colors.tertiary} />
+              <Text style={styles.attendence} type="subtitle">
+                {attendees.length} of {capacity}
+              </Text>
+            </View>
             {interactionButton}
           </View>
         </>
@@ -115,8 +117,10 @@ const styles = StyleSheet.create({
   description: {
     paddingVertical: breakpoints.padding,
   },
-  icon: {
-    marginRight: 10,
+  capacityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
   },
   date: {
     fontWeight: 400,

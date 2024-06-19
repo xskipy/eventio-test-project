@@ -8,6 +8,7 @@ import ProfileHeaderButtons from "@/components/headers/ProfileHeaderButtons";
 import { EventsProvider } from "@/contexts/EventsContext";
 import HeaderBackButton from "@/components/headers/HeaderBackButton";
 import { tabsContainerStyle, tabsOptions } from "@/constants/screenOptions";
+import { Device } from "@/utils/deviceInfo";
 
 const MainLayout = () => {
   return (
@@ -26,10 +27,19 @@ const MainLayout = () => {
           options={{
             title: "Add Event",
             tabBarIcon: () => <PlusIcon />,
+            // Used for Android
+            headerBackgroundContainerStyle: {
+              backgroundColor: colors.background.secondary,
+            },
           }}
           listeners={() => ({
             tabPress: (e) => {
+              // Use normal screen for Android
+              if (Device.isAndroid) return;
+
+              // Display modal for iOS
               e.preventDefault();
+
               // Navigate to modal
               router.push("/add-event");
             },

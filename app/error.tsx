@@ -1,34 +1,19 @@
-import Button from "@/components/Button";
-import SignupForm from "@/components/forms/SignupForm";
-import Text from "@/components/Text";
-import { View } from "react-native";
-import ErrorIcon from "@/assets/images/icons/error.svg";
-import { breakpoints } from "@/constants/theme";
-import Layout from "@/components/screens/Layout";
+import { router } from "expo-router";
+import Error from "@/components/screens/Error";
 
-// TODO: Properly style ErrorPage
 const ErrorScreen = () => {
+  // TODO: Implement correct "TryAgain" functionality
+  const onTryAgain = () => {
+    router.replace("/");
+  };
+
   return (
-    <Layout>
-      <Layout type="centered">
-        <ErrorIcon />
-        <Text type="title">Something went wrong</Text>
-        <Text type="subtitle">Something went wrong, please try it again.</Text>
-      </Layout>
-      <View
-        style={{
-          // flex: 1,
-          justifyContent: "flex-end",
-          paddingBottom: breakpoints.padding,
-        }}
-      >
-        <Button
-          type="black"
-          // onPressOut={}
-          title="Try again"
-        />
-      </View>
-    </Layout>
+    <Error
+      title="Something went wrong"
+      subtitle="Something went wrong, please try it again.."
+      onButtonPress={onTryAgain}
+      buttonTitle="Try again"
+    />
   );
 };
 

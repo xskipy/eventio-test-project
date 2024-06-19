@@ -10,6 +10,7 @@ export const tabsOptions = {
     height: 72,
   },
   headerStatusBarHeight: 44,
+  headerTitleAlign: "center" as "center",
 };
 
 export const tabsContainerStyle = {
@@ -24,4 +25,5 @@ export const stackOptions = {
     backgroundColor: colors.white,
   },
   headerShown: false,
+  headerTitleAlign: "center" as "center",
 };
