@@ -14,10 +14,10 @@ import { router } from "expo-router";
 
 export interface EventProps {
   data: EventType;
-  disableDetailPress?: boolean;
+  detailView?: boolean;
 }
 
-const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
+const Event: FC<EventProps> = ({ data, detailView = false }) => {
   const { userData } = useAuth();
   const { startsAt, title, owner, description, attendees, capacity, id } = data;
 
@@ -62,13 +62,15 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
     </Text>
   );
 
+  const isLinesLayout = layout === "lines" && !detailView;
+
   return (
-    <Paper style={[styles.container, layout === "lines" ? styles.lineLayout : undefined]}>
-      <View style={[styles.header, layout === "lines" ? styles.lineHeader : undefined]}>
+    <Paper style={[styles.container, isLinesLayout ? styles.lineLayout : undefined]}>
+      <View style={[styles.header, isLinesLayout ? styles.lineHeader : undefined]}>
         <Text testID="event-start" style={styles.date} type="subtitle">
           {eventStart}
         </Text>
-        {disableDetailPress ? (
+        {detailView ? (
           eventTitle
         ) : (
           <TouchableOpacity onPress={navigateToDetail}>{eventTitle}</TouchableOpacity>
@@ -79,7 +81,7 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
           type="subtitle"
         >{`${owner.firstName} ${owner.lastName}`}</Text>
       </View>
-      {layout === "grid" && (
+      {!isLinesLayout && (
         <>
           <Text testID="event-description" style={styles.description} type="default">
             {description}
@@ -95,7 +97,7 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
           </View>
         </>
       )}
-      {layout === "lines" && <View style={styles.lineButton}>{interactionButton}</View>}
+      {isLinesLayout && <View style={styles.lineButton}>{interactionButton}</View>}
     </Paper>
   );
 };

@@ -54,9 +54,15 @@
   - I suspect some additional setup for fonts
 
 - **IOS navigation on random press**
+
   - Sometimes when pressing somewhere on the screen the app is navigated back to /events
   - Might be a caching error or issue with simulator, could not find where this could originate
   - No visible error is displayed
+
+- **Event Detail Attendees**
+  - When leaving/joining event the attendees list changes
+  - Needs to be investigated
+  - POI: @/hooks/useEvent #optimisticQueryUpdate
 
 ## Next Steps
 

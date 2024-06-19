@@ -27,7 +27,7 @@ const EventDetailsScreen = () => {
 
   return (
     <Layout>
-      <Event data={event} disableDetailPress />
+      <Event data={event} detailView />
       <Attendees data={event.attendees} />
     </Layout>
   );
