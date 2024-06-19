@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { breakpoints, colors, headerTitleStyle } from "@/constants/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { queryRetryCount } from "@/config";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import devLog from "@/utils/devLog";
 import HeaderCloseButton from "@/components/headers/HeaderCloseButton";
 import { stackOptions } from "@/constants/screenOptions";

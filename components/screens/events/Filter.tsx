@@ -1,4 +1,4 @@
-import Button, { ButtonProps, ButtonTypes } from "@/components/Button";
+import Button, { ButtonTypes } from "@/components/Button";
 import { useEvents } from "@/contexts/EventsContext";
 import { Filter as FilterType } from "@/types/EventsContext";
 import { View, StyleSheet } from "react-native";

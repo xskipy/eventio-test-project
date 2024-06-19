@@ -36,7 +36,7 @@ const Event: FC<EventProps> = ({ data, disableDetailPress = false }) => {
     }
 
     return { title: "Join", onPress: joinEvent, type: "primary" };
-  }, [isOwner, isAttending]);
+  }, [isOwner, isAttending, editEvent, leaveEvent, joinEvent]);
 
   const eventStart = getEventStartTime(startsAt);
 

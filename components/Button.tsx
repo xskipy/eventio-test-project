@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
       size === "s" ? styles.small : undefined,
       style,
     ],
-    [style, type]
+    [style, type, size]
   );
 
   if (loading)

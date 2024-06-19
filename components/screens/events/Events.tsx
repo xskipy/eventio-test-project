@@ -25,7 +25,7 @@ const Events: FC<EventsProps> = ({ displayEvents = "all", header }) => {
       default:
         return events;
     }
-  }, [displayEvents, events, filteredEvents]);
+  }, [displayEvents, events, filteredEvents, userData]);
 
   const renderEvent: ListRenderItem<EventType> = useCallback(
     ({ item }) => <Event data={item} />,

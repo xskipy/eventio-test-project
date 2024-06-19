@@ -13,7 +13,7 @@ const useEvent = (id: string) => {
   const invalidateQueries = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ["events"] });
     queryClient.invalidateQueries({ queryKey: [`events/${id}`] });
-  }, [queryClient]);
+  }, [queryClient, id]);
 
   const optimisticQueryUpdate = useCallback(
     (type: "left" | "joined") => {
@@ -40,7 +40,7 @@ const useEvent = (id: string) => {
       queryClient.setQueryData<Event[]>(["events"], () => previousEvents);
       queryClient.setQueryData<Event>([`events/${id}`], () => previousEvents[eventIndex]);
     },
-    [queryClient, userData]
+    [queryClient, userData, id]
   );
 
   const { mutate: joinEvent } = useMutation<Event, ErrorResponse, void>(

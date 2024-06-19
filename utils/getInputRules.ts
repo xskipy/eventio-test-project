@@ -1,5 +1,4 @@
 import ValidationType from "@/types/ValidationType";
-import { ValidationRule } from "react-hook-form";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;

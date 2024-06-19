@@ -1,10 +1,9 @@
 import Layout from "@/components/screens/Layout";
-import { colors } from "@/constants/theme";
 import { useAuth } from "@/contexts/AuthContext";
 import devLog from "@/utils/devLog";
 import { router, useRootNavigationState } from "expo-router";
 import { useEffect } from "react";
-import { View, Image } from "react-native";
+import { Image } from "react-native";
 
 /**
  *
@@ -32,7 +31,7 @@ const SplashScreen = () => {
 
     devLog("info", "User logged in. Navigating to /main");
     router.replace("(main)");
-  }, [authLoading, rootNavigationState]);
+  }, [authLoading, rootNavigationState, isUserLoggedIn]);
 
   return (
     <Layout type="centered">

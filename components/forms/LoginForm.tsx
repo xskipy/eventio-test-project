@@ -7,7 +7,6 @@ import useMutation from "@/hooks/useMutation";
 import AuthResponse from "@/types/api/AuthResponse";
 import LoginFormValues from "@/types/forms/LoginFormValues";
 import setFormError from "@/utils/setFormError";
-import { saveToStorage } from "@/utils/storage";
 import { FormProvider, useForm } from "react-hook-form";
 import { KeyboardAvoidingView, StyleSheet } from "react-native";
 import { router } from "expo-router";

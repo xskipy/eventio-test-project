@@ -1,5 +1,5 @@
 import { breakpoints } from "@/constants/theme";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import CreateEventForm from "@/components/forms/CreateEventForm";
 import Layout from "@/components/screens/Layout";
 

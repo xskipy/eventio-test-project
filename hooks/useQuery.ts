@@ -43,7 +43,6 @@ const useQuery = <TData = unknown, TError = unknown>(queryKey: QueryKey) => {
 
       const data = await res.json();
 
-
       return data;
     },
   });

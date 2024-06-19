@@ -1,4 +1,4 @@
-import { breakpoints, colors, headerTitleStyle } from "@/constants/theme";
+import { colors } from "@/constants/theme";
 import { router, Tabs } from "expo-router";
 import CalendarIcon from "@/assets/images/icons/calendar.svg";
 import UserIcon from "@/assets/images/icons/user.svg";

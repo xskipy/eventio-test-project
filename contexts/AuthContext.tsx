@@ -4,19 +4,10 @@ import UserData from "@/types/UserData";
 import devLog from "@/utils/devLog";
 import getApiKey from "@/utils/getApiKey";
 import setStateAndStorage from "@/utils/saveStateAndStorage";
-import { clearFromStorage, getFromStorage, saveToStorage } from "@/utils/storage";
+import { clearFromStorage, getFromStorage } from "@/utils/storage";
 import { router } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import { jwtDecode } from "jwt-decode";
-import {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  FC,
-  PropsWithChildren,
-  useMemo,
-} from "react";
+import { useState, useEffect, createContext, useContext, FC, PropsWithChildren } from "react";
 
 const AuthContext = createContext({} as IAuthContext);
 
